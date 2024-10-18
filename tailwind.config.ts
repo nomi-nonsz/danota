@@ -9,6 +9,15 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+			animation: {
+				'blink-anim': 'blink 0.4s infinite'
+			},
+			keyframes: {
+        blink: {
+          '0%, 100%': { opacity: "1" },
+          '50%': { opacity: "0" },
+        }
+			},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',

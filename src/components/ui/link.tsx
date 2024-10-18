@@ -9,9 +9,10 @@ export interface LinkProps extends HTMLAttributes<HTMLAnchorElement> {
 }
 
 export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
-  ({ className, ...props }) => (
+  ({ className, ...props }, ref) => (
     <LinkElement
       className={cn("text-primary", className)}
+      ref={ref}
       {...props}
     />
 ))
