@@ -92,9 +92,6 @@ export const RegisterForm = () => {
             </FormItem>
           )}
         />
-        <div className="text-xs">
-          <Link href="/forgot-password">Forgot Password?</Link>
-        </div>
         <Button className="w-full font-bold py-4 h-fit" type="submit">Continue</Button>
       </form>
     </Form>
