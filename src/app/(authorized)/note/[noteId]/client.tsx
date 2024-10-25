@@ -2,6 +2,7 @@
 
 import { EditorTopBar } from "@/components/single/editor-top-bar"
 import { NoteCanvas } from "@/components/ui/note-canvas";
+import { Toolbar } from "@/components/ui/toolbar";
 import { useRef, useState } from "react"
 
 export const NoteClient = () => {
@@ -17,8 +18,11 @@ export const NoteClient = () => {
       ref={scrollRef}
     >
       <EditorTopBar isScrolled={scroll > 20} />
-      <div className="pt-5 text-center">
+      <div className="py-10 text-center">
         <NoteCanvas />
+      </div>
+      <div className="sticky bottom-8 inset-0 mx-auto w-fit">
+        <Toolbar />
       </div>
     </main>
   )
