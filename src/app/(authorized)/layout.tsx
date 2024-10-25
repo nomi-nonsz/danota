@@ -15,7 +15,7 @@ export default async function AdminLayout({
   return (
     <>
       <main className="flex flex-row h-screen">
-        <div className="w-[260px] flex-none">
+        <div className="flex-none">
           <SideNav />
         </div>
         <div className="relative flex-grow bg-background-2">
