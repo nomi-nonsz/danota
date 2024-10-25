@@ -18,7 +18,7 @@ export default async function AdminLayout({
         <div className="w-[260px] flex-none">
           <SideNav />
         </div>
-        <div className="overflow-y-auto flex-grow p-16">
+        <div className="relative flex-grow bg-background-2">
           {children}
         </div>
       </main>
