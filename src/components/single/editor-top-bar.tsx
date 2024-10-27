@@ -36,7 +36,7 @@ export const EditorTopBar = ({
             <LockIcon size={20} />
             Private
           </div>
-          <Badge variant="secondary">Not saved</Badge>
+          <Badge variant="warning">Not saved</Badge>
         </div>
       </div>
       <ProfileBar />

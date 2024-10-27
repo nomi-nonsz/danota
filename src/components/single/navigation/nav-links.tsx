@@ -42,7 +42,7 @@ export const NavLinks = ({
         <Button
           variant={nav.variant === "primary" ? "default" : 'ghost'}
           className={cn(
-            "w-full justify-start gap-3 px-[18px] py-4 h-fit rounded-xl font-bold overflow-hidden text-base [&_svg]:size-6",
+            "w-full justify-start gap-3 px-[18px] py-4 h-fit rounded-xl font-bold overflow-hidden [&_svg]:size-6",
             (currentTab !== tab && !nav.variant) && "text-muted-foreground"
           )}
         >

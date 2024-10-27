@@ -17,7 +17,7 @@ export const SideNav = () => {
   return (
     <div className={cn(
       "border-r border-border p-4 h-full flex flex-col justify-between relative transition-[width]",
-      expanded ? "w-[260px]" : "w-[90px]"
+      expanded ? "w-[280px]" : "w-[90px]"
     )}>
       <Button
         variant={"outline-2"}
