@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 
 import { SideNav } from "@/components/single/navigation/side-nav";
+import { NoteModal } from "@/components/single/modal/note-modal";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -22,6 +23,7 @@ export default async function AdminLayout({
           {children}
         </div>
       </main>
+      <NoteModal />
     </>
   )
 }
