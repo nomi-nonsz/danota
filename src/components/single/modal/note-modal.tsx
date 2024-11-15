@@ -14,7 +14,7 @@ export const NoteModal = () => {
         className="bg-opacity-30"
       >
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="font-bold text-2xl">
             {data ? "Edit note" : "Create new note"}
           </DialogTitle>
         </DialogHeader>
