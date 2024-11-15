@@ -13,7 +13,7 @@ export const SearchInput = forwardRef<HTMLDivElement, ISearchInput>(
     return (
       <div
         className={cn(
-          "flex border rounded-lg relative bg-white",
+          "flex border rounded-lg relative bg-background",
           className
         )}
         ref={ref}

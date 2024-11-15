@@ -21,6 +21,7 @@ export default function NotesPage () {
         {Array(5).fill("").map((_, a) => 
           <NoteItem
             key={a}
+            id={a}
             icon="ChefHat"
             commentCount={21}
             starCount={34}

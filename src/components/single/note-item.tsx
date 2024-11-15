@@ -1,9 +1,12 @@
 'use client'
 
-import { icons, LockIcon, MessageSquareIcon, StarIcon, } from 'lucide-react';
+import { EllipsisVerticalIcon, GlobeIcon, icons, LockIcon, MessageSquareIcon, PencilIcon, StarIcon, TrashIcon, } from 'lucide-react';
 import { format } from 'date-fns';
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '../ui/dropdown-menu';
+import { Button } from '../ui/button';
 
 interface NoteItemProps {
+  id: string | number;
   content?: React.ReactNode;
   isPublic: boolean;
   starCount: number;
@@ -13,6 +16,7 @@ interface NoteItemProps {
 }
 
 export const NoteItem: React.FC<NoteItemProps> = ({
+  id,
   content,
   isPublic,
   starCount,
@@ -23,15 +27,17 @@ export const NoteItem: React.FC<NoteItemProps> = ({
   const Icon = icons[icon];
 
   return (
-    <div className="border rounded-md">
-      <article className="p-6 space-y-2 [&_p]:text-muted-foreground">
-        <h4 className="font-bold">How to make crispiest french fries</h4>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.</p>
-        <p>Nullam quis imperdiet augue. Vestibulum auctor ornare leo, non suscipit....</p>
-      </article>
+    <div className="border rounded-md bg-background">
+      <button className='p-6 text-left bg-background hover:bg-accent rounded-md'>
+        <article className="space-y-2 [&_p]:text-muted-foreground">
+          <h4 className="font-bold">How to make crispiest french fries</h4>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.</p>
+          <p>Nullam quis imperdiet augue. Vestibulum auctor ornare leo, non suscipit....</p>
+        </article>
+      </button>
       <hr className="border-border" />
-      <section className="p-6 flex justify-between items-center">
-        <div className="flex gap-3 text-sm">
+      <section className="p-4 flex justify-between items-center">
+        <div className="flex gap-3 text-sm p-2">
           <Icon size={20} />
           <div className='border-s' />
           <div className="flex items-center gap-1">
@@ -50,9 +56,35 @@ export const NoteItem: React.FC<NoteItemProps> = ({
           <div className="">
             {format(date, "K:mm a")}
             <span className="text-muted-foreground mx-2">·</span>
-            {format(date, "MMM d, Y")}
+            {format(date, "MMM d, y")}
           </div>
         </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant={"outline-2"} className='w-10 h-10'>
+              <EllipsisVerticalIcon />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>
+              {isPublic ? <>
+                <LockIcon />
+                Unpublish
+              </> : <>
+                <GlobeIcon />
+                Publish
+              </>}
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <PencilIcon />
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem className='text-destructive focus:text-background focus:bg-destructive'>
+              <TrashIcon />
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </section>
     </div>
   )
