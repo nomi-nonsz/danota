@@ -44,14 +44,16 @@ export const NoteItem: React.FC<NoteItemProps> = ({
             <LockIcon size={16} />
             {isPublic ? 'Public' : 'Private'}
           </div>
-          <div className="flex items-center gap-1">
-            <StarIcon size={16} />
-            {starCount}
-          </div>
-          <div className="flex items-center gap-1">
-            <MessageSquareIcon size={16} />
-            {commentCount}
-          </div>
+          {isPublic && <>
+            <div className="flex items-center gap-1">
+              <StarIcon size={16} />
+              {starCount}
+            </div>
+            <div className="flex items-center gap-1">
+              <MessageSquareIcon size={16} />
+              {commentCount}
+            </div>
+          </>}
           <div className='border-s' />
           <div className="">
             {format(date, "K:mm a")}
