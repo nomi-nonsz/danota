@@ -22,11 +22,12 @@ export const SwitchForm = forwardRef<HTMLDivElement, SwitchFormProps>(
       ref={ref}
       {...props}
     >
-      <FormLabel>{label}</FormLabel>
+      <FormLabel className={cn(field.disabled && "text-muted-foreground")}>{label}</FormLabel>
       <FormControl>
         <Switch
           checked={field.value}
           onCheckedChange={field.onChange}
+          disabled={field.disabled}
           ref={field.ref}
         />
       </FormControl>
