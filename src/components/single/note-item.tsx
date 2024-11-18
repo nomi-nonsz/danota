@@ -1,9 +1,24 @@
 'use client'
 
-import { EllipsisVerticalIcon, GlobeIcon, icons, LockIcon, MessageSquareIcon, PencilIcon, StarIcon, TrashIcon, } from 'lucide-react';
-import { format } from 'date-fns';
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '../ui/dropdown-menu';
-import { Button } from '../ui/button';
+import { format } from "date-fns";
+import {
+  EllipsisVerticalIcon,
+  GlobeIcon,
+  icons,
+  LockIcon,
+  MessageSquareIcon,
+  PencilIcon,
+  StarIcon,
+  TrashIcon,
+} from "lucide-react";
+import { useAlert } from "@/hooks/use-alert";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "../ui/dropdown-menu";
+import { Button } from "../ui/button";
 
 interface NoteItemProps {
   id: string | number;
@@ -25,6 +40,14 @@ export const NoteItem: React.FC<NoteItemProps> = ({
   icon
 }) => {
   const Icon = icons[icon];
+  const { dispatch } = useAlert();
+
+  const onDelete = () => {
+    dispatch({
+      title: "Delete this note?",
+      onConfirm: () => {}
+    });
+  }
 
   return (
     <div className="border rounded-md bg-background">
@@ -81,7 +104,10 @@ export const NoteItem: React.FC<NoteItemProps> = ({
               <PencilIcon />
               Edit
             </DropdownMenuItem>
-            <DropdownMenuItem className='text-destructive focus:text-background focus:bg-destructive'>
+            <DropdownMenuItem
+              className='text-destructive focus:text-background focus:bg-destructive'
+              onClick={onDelete}
+            >
               <TrashIcon />
               Delete
             </DropdownMenuItem>

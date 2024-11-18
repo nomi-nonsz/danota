@@ -38,7 +38,7 @@ export const SettingsClient = () => {
     <WorkContainer className="space-y-5">
       <Form {...form}>
         <SettingsCard title="Account" icon={UserIcon}>
-          <AccountSettingsForm form={form} />
+          <AccountSettingsForm uid={"any id"} form={form} />
         </SettingsCard>
         <SettingsCard title="Editor" icon={PencilRulerIcon}>
           <EditorSettingsForm form={form} />
