@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import { Button } from "./button"
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "./tooltip";
@@ -32,18 +32,18 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./dropdown-menu";
 import { useToolbarPosition } from "@/hooks/use-toolbar";
+import { CanvasEditorContext } from "@/hooks/use-canvas-editor";
 
 export interface IToolbar {
   onClick?: () => void,
   name: string,
   label?: string,
   icon: any,
-  hotkey?: React.ReactNode
+  hotkey?: React.ReactNode,
+  isActive?: boolean,
 }
 
 const toolbarHeading: IToolbar[] = [
@@ -84,7 +84,8 @@ export const ToolbarButton = ({
   name,
   label,
   icon,
-  hotkey
+  hotkey,
+  isActive
 } : IToolbar) => { 
   const Icon = icon;
 
@@ -93,14 +94,20 @@ export const ToolbarButton = ({
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
-            className="w-12 h-12"
+            className={cn(
+              "w-12 h-12",
+              isActive && "bg-primary-foreground text-primary"
+            )}
             variant={"ghost"}
             onClick={onClick}
           >
             <Icon />
+            <span className="sr-only">
+              {name}
+            </span>
           </Button>
         </TooltipTrigger>
-        <TooltipContent>
+        <TooltipContent className="pointer-events-none">
           <p>
             {label}
             {hotkey && <Badge className="ms-1 bg-border/50 p-1 rounded-sm text-foreground">
@@ -177,10 +184,23 @@ export const ToolbarSelect = ({
 }
 
 export const Toolbar = () => {
+  const { editor } = useContext(CanvasEditorContext);
   const toolbarPos = useToolbarPosition();
 
   const isToolbarBottom = toolbarPos.position === 'bottom';
   const toolbarDirection = isToolbarBottom ? "flex-row" : "flex-col";
+
+  if (!editor) {
+    return null;
+  }
+
+  const onBold = () => {
+    editor.chain().focus().toggleBold().run();
+  }
+
+  const onUnderline = () => {
+    editor.chain().focus().toggleUnderline().run();
+  }
 
   return (
     <div className={cn("flex rounded-2xl bg-background border w-fit shadow-lg", toolbarDirection)}>
@@ -194,12 +214,16 @@ export const Toolbar = () => {
           label="Bold"
           name="bold"
           hotkey="CTRL + B"
+          onClick={onBold}
+          isActive={editor.isActive('bold')}
         />
         <ToolbarButton
           icon={UnderlineIcon}
           label="Underline"
           name="underline"
           hotkey="CTRL + U"
+          onClick={onUnderline}
+          isActive={editor.isActive('underline')}
         />
         <ToolbarButton
           icon={ItalicIcon}

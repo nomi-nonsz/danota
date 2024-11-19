@@ -1,8 +1,8 @@
 'use client'
 
-import StarterKit from "@tiptap/starter-kit";
-import Placeholder from "@tiptap/extension-placeholder";
-import { useEditor, UseEditorOptions, type Editor } from "@tiptap/react";
+import { editorOptions } from "@/data/editor-options";
+
+import { useEditor, type Editor } from "@tiptap/react";
 import { createContext, useContext, useEffect, useState } from "react";
 
 interface CanvasEditorStore {
@@ -17,16 +17,6 @@ export const CanvasEditorContext = createContext<CanvasEditorStore>({
 });
 
 export const useCanvasEditor = () => useContext(CanvasEditorContext);
-
-export const editorOptions: UseEditorOptions = {
-  extensions: [
-    StarterKit.configure({}),
-    Placeholder.configure({
-      placeholder: "Type something..."
-    })
-  ],
-  immediatelyRender: true
-};
 
 export const CanvasEditorProvider = ({
   children
