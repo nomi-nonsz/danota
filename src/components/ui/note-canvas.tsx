@@ -1,11 +1,18 @@
 'use client'
 
+import dynamic from "next/dynamic"
 import { WorkContainer } from "./work-container"
 
-export const NoteCanvas = () => {
+const TiptapEditor = dynamic(() => import('../single/tiptap-editor').then(c => c.TiptapEditor), { ssr: false });
+
+export const NoteCanvas = ({
+  content
+}: {
+  content: string | null
+}) => {
   return (
-    <WorkContainer className="h-screen bg-white p-8 mx-auto border rounded-2xl">
-      <textarea className="block w-full h-full p-2" placeholder="Type your note..."></textarea>
+    <WorkContainer className="h-fit bg-white mx-auto border rounded-2xl">
+      <TiptapEditor content={content} />
     </WorkContainer>
   )
 }
