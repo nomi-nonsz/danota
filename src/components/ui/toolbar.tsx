@@ -36,6 +36,9 @@ import {
 } from "./dropdown-menu";
 import { useToolbarPosition } from "@/hooks/use-toolbar";
 import { CanvasEditorContext } from "@/hooks/use-canvas-editor";
+import { Popover } from "./popover";
+import { PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
+import { LinkForm } from "../single/forms/link-form";
 
 export interface IToolbar {
   onClick?: () => void,
@@ -202,6 +205,18 @@ export const Toolbar = () => {
     editor.chain().focus().toggleUnderline().run();
   }
 
+  const onItalic = () => {
+    editor.chain().focus().toggleItalic().run();
+  }
+
+  const onLink = (url: string) => {
+    editor.chain().focus().setLink({ href: url }).run();
+  }
+
+  const unLink = () => {
+    editor.chain().focus().unsetLink().run();
+  }
+
   return (
     <div className={cn("flex rounded-2xl bg-background border w-fit shadow-lg", toolbarDirection)}>
       <section className={cn("p-2 flex gap-2", toolbarDirection)}>
@@ -230,12 +245,32 @@ export const Toolbar = () => {
           label="Italic"
           name="italic"
           hotkey="CTRL + I"
+          onClick={onItalic}
+          isActive={editor.isActive('italic')}
         />
-        <ToolbarButton
-          icon={Link2Icon}
-          label="Insert link"
-          name="link"
-        />
+        {editor.isActive('link') ? (
+          <ToolbarButton
+            icon={Link2Icon}
+            label="Insert link"
+            name="link"
+            onClick={unLink}
+            isActive
+          />
+        ) : (
+          <Popover>
+            <PopoverTrigger>
+              <ToolbarButton
+                icon={Link2Icon}
+                label="Insert link"
+                name="link"
+              />
+            </PopoverTrigger>
+            <PopoverContent side="top" className="p-3 bg-background border rounded-md shadow-lg">
+              <div className="font-bold mb-2">Insert link</div>
+              <LinkForm onSubmit={onLink} />
+            </PopoverContent>
+          </Popover>
+        )}
       </section>
       <SeparatorLite
         orientation={isToolbarBottom ? "vertical": "horizontal"}
