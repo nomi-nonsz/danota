@@ -13,9 +13,9 @@ export const EditorTopBar = ({
 }) => {
   return (
     <div className={cn(
-      "flex justify-between sticky top-0 p-8 transition border-b",
+      "flex justify-between sticky top-0 p-8 transition border-b z-10",
       "bg-transparent backdrop-blur-0 border-transparent",
-      isScrolled && "bg-background/30 backdrop-blur-lg border-border"
+      isScrolled && "bg-background/70 backdrop-blur-lg border-border"
     )}>
       <div className="space-y-2">
         <header className="flex gap-2 items-center">

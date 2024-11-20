@@ -8,7 +8,14 @@ import type { UseEditorOptions } from "@tiptap/react";
 
 export const editorOptions: UseEditorOptions = {
   extensions: [
-    StarterKit.configure({}),
+    StarterKit.configure({
+      heading: {
+        levels: [1, 2, 3, 4, 5, 6],
+        HTMLAttributes: {
+          class: "font-bold"
+        }
+      }
+    }),
     Placeholder.configure({
       placeholder: "Type something..."
     }),

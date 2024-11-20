@@ -39,6 +39,7 @@ import { CanvasEditorContext } from "@/hooks/use-canvas-editor";
 import { Popover } from "./popover";
 import { PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
 import { LinkForm } from "../single/forms/link-form";
+import type { Editor } from "@tiptap/react";
 
 export interface IToolbar {
   onClick?: () => void,
@@ -49,36 +50,60 @@ export interface IToolbar {
   isActive?: boolean,
 }
 
-const toolbarHeading: IToolbar[] = [
+const toolbarHeading: (editor: Editor) => IToolbar[] = (editor) => [
   {
     name: "h1",
     icon: Heading1Icon,
     label: "Heading 1",
+    onClick: () => {
+      editor.chain().focus().toggleHeading({ level: 1 }).run();
+    },
+    isActive: editor.isActive('heading', { level: 1 })
   },
   {
     name: "h2",
     icon: Heading2Icon,
     label: "Heading 2",
+    onClick: () => {
+      editor.chain().focus().toggleHeading({ level: 2 }).run();
+    },
+    isActive: editor.isActive('heading', { level: 2 })
   },
   {
     name: "h3",
     icon: Heading3Icon,
     label: "Heading 3",
+    onClick: () => {
+      editor.chain().focus().toggleHeading({ level: 3 }).run();
+    },
+    isActive: editor.isActive('heading', { level: 3 })
   },
   {
     name: "h4",
     icon: Heading4Icon,
     label: "Heading 4",
+    onClick: () => {
+      editor.chain().focus().toggleHeading({ level: 4 }).run();
+    },
+    isActive: editor.isActive('heading', { level: 4 })
   },
   {
     name: "h5",
     icon: Heading5Icon,
     label: "Heading 5",
+    onClick: () => {
+      editor.chain().focus().toggleHeading({ level: 5 }).run();
+    },
+    isActive: editor.isActive('heading', { level: 5 })
   },
   {
     name: "h6",
     icon: Heading6Icon,
     label: "Heading 6",
+    onClick: () => {
+      editor.chain().focus().toggleHeading({ level: 6 }).run();
+    },
+    isActive: editor.isActive('heading', { level: 6 })
   }
 ]
 
@@ -145,44 +170,47 @@ export const ToolbarSelect = ({
   const toggleShow = () => setShow(val => !val);
 
   return (
-    <div className="relative">
+    <Popover open={show} onOpenChange={setShow}>
       <div className={cn(
         "flex",
         isDirectionVertical ? "flex-col" : "flex-row"
       )}>
         <ToolbarButton {...selectedTool} />
-        <Button
-          variant={"ghost"}
-          className={cn(
-            "p-0 [&_svg]:size-3",
-            isDirectionVertical ? "w-12 h-5" : "w-5 h-12"
-          )}
-          onClick={toggleShow}
-        >
-          {isDirectionVertical
-            ? <ChevronLeftIcon />
-            : <ChevronDownIcon />}
-        </Button>
+        <PopoverTrigger asChild>
+          <Button
+            variant={"ghost"}
+            className={cn(
+              "p-0 [&_svg]:size-3",
+              isDirectionVertical ? "w-12 h-5" : "w-5 h-12"
+            )}
+            onClick={toggleShow}
+          >
+            {isDirectionVertical
+              ? <ChevronLeftIcon />
+              : <ChevronDownIcon />}
+          </Button>
+        </PopoverTrigger>
       </div>
-      {show && (
-        <div className={cn(
-          "absolute flex bg-white w-fit p-1 rounded-lg border shadow-md z-50",
+      <PopoverContent
+        className={cn(
+          "flex bg-white w-fit p-1 rounded-lg border shadow-md",
           isDirectionVertical ? "flex-row right-14 top-0" : "flex-col bottom-14"
-        )}>
-          {displayedData.map((toolbar, i) => (    
-              <ToolbarButton
-                key={toolbar.name}
-                onClick={() => {
-                  toolbar.onClick?.();
-                  setSelected(toolbar.name);
-                  setShow(false);
-                }}
-                {...toolbar}
-              />
-          ))}
-        </div>
-      )}
-    </div>
+        )}
+        side={isDirectionVertical ? "right" : "bottom"}
+      >
+        {displayedData.map((toolbar, i) => (    
+          <ToolbarButton
+            key={toolbar.name}
+            onClick={() => {
+              setShow(false);
+              setSelected(_ => toolbar.name);
+              toolbar.onClick?.();
+            }}
+            {...toolbar}
+          />
+        ))}
+      </PopoverContent>
+    </Popover>
   );
 }
 
@@ -217,11 +245,15 @@ export const Toolbar = () => {
     editor.chain().focus().unsetLink().run();
   }
 
+  const onSave = () => {
+    console.log(editor.getHTML());
+  }
+
   return (
     <div className={cn("flex rounded-2xl bg-background border w-fit shadow-lg", toolbarDirection)}>
       <section className={cn("p-2 flex gap-2", toolbarDirection)}>
         <ToolbarSelect
-          data={toolbarHeading}
+          data={toolbarHeading(editor)}
           direction={isToolbarBottom ? "horizontal" : "vertical"}
         />
         <ToolbarButton
@@ -303,7 +335,11 @@ export const Toolbar = () => {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <Button variant={"default"} className={cn("flex font-bold h-12", toolbarDirection)}>
+        <Button
+          variant={"default"}
+          className={cn("flex font-bold h-12", toolbarDirection)}
+          onClick={onSave}
+        >
           <SaveIcon />
           {isToolbarBottom && "Save"}
         </Button>
