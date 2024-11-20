@@ -1,8 +1,8 @@
 import StarterKit from "@tiptap/starter-kit";
 
-import Placeholder from "@tiptap/extension-placeholder";
-import Underline from "@tiptap/extension-underline";
 import Link from "@tiptap/extension-link";
+import Underline from "@tiptap/extension-underline";
+import Placeholder from "@tiptap/extension-placeholder";
 
 import type { UseEditorOptions } from "@tiptap/react";
 
@@ -14,7 +14,7 @@ export const editorOptions: UseEditorOptions = {
         HTMLAttributes: {
           class: "font-bold"
         }
-      }
+      },
     }),
     Placeholder.configure({
       placeholder: "Type something..."

@@ -15,15 +15,13 @@ export const NoteClient = () => {
   const toolbarPos = useToolbarPosition();
 
   const [scroll, setScroll] = useState<number>(0);
-  const scrollRef = useRef<HTMLElement | null>(null);
 
   return (
     <main
       className="overflow-y-auto h-full"
       onScroll={(e) => {
-        setScroll(scrollRef.current?.scrollTop ?? 0);
+        setScroll(e.currentTarget.scrollTop ?? 0);
       }}
-      ref={scrollRef}
     >
       <CanvasEditorProvider>
         <EditorTopBar isScrolled={scroll > 20} />

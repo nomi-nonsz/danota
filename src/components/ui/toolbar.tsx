@@ -19,6 +19,7 @@ import { ToolbarMenu } from "./toolbar-menu";
 import { UnderlineToolbar } from "./toolbars/underline";
 import { ItalicToolbar } from "./toolbars/italic";
 import { LinkToolbar } from "./toolbars/link";
+import { BulletListToolbar, OrderedListToolbar } from "./toolbars/list";
 
 export const Toolbar = () => {
   const { editor } = useContext(CanvasEditorContext);
@@ -45,6 +46,8 @@ export const Toolbar = () => {
         <BoldToolbar editor={editor} />
         <UnderlineToolbar editor={editor} />
         <ItalicToolbar editor={editor} />
+        <BulletListToolbar editor={editor} />
+        <OrderedListToolbar editor={editor} />
         <LinkToolbar editor={editor} />
       </section>
       <SeparatorLite
