@@ -11,7 +11,7 @@ export const NoteCanvas = ({
   content: string | null
 }) => {
   return (
-    <WorkContainer className="h-fit bg-white mx-auto border rounded-2xl">
+    <WorkContainer className="h-fit transition-[height] bg-white mx-auto border rounded-2xl">
       <TiptapEditor content={content} />
     </WorkContainer>
   )
