@@ -83,4 +83,33 @@ body {
   .home-container {
     @apply px-36
   }
+
+  .note-editor > .tiptap h1 {
+    @apply text-3xl
+  }
+  .note-editor > .tiptap h2 {
+    @apply text-2xl
+  }
+  .note-editor > .tiptap h3 {
+    @apply text-xl
+  }
+  .note-editor > .tiptap h4 {
+    @apply text-lg
+  }
+  .note-editor > .tiptap h5 {
+    @apply text-base
+  }
+  .note-editor > .tiptap h5 {
+    @apply text-sm
+  }
+
+  .note-editor > .tiptap ul {
+    @apply list-disc list-outside ml-4
+  }
+  .note-editor > .tiptap ol {
+    @apply list-decimal ml-4
+  }
+  .note-editor > .tiptap li {
+    @apply ms-3
+  }
 }
