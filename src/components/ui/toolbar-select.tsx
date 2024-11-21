@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./button"
+import type { Editor } from "@tiptap/react";
 import { IToolbar, ToolbarButton } from "./toolbar-button";
 
 import { cn } from "@/lib/utils";
@@ -9,25 +10,32 @@ import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { ChevronDownIcon, ChevronLeftIcon } from "lucide-react";
 
 export const ToolbarSelect = ({
+  editor,
   data,
   defaultv,
   direction
 } : {
+  editor: Editor
   data: IToolbar[],
   defaultv?: string,
   direction?: 'horizontal' | 'vertical'
 }) => {
   defaultv = defaultv ?? data[0].name;
-  
-  const [selected, setSelected] = useState<string>(defaultv);
   const [show, setShow] = useState<boolean>(false);
 
-  const displayedData = data.filter(val => val.name !== selected).reverse();
-  const selectedTool = data.filter(val => val.name === selected)[0];
+  const [selected, setSelected] = useState<string>(defaultv);
 
   const isDirectionVertical = (direction && direction === "vertical");
 
   const toggleShow = () => setShow(val => !val);
+
+  // idk bruh, i give up 😭️🙏️
+  useEffect(() => {
+    setTimeout(() => {
+      if (!show)
+      editor.chain().focus();
+    }, 200);
+  }, [show])
 
   return (
     <Popover open={show} onOpenChange={setShow}>
@@ -35,7 +43,7 @@ export const ToolbarSelect = ({
         "flex",
         isDirectionVertical ? "flex-col" : "flex-row"
       )}>
-        <ToolbarButton {...selectedTool} />
+        <ToolbarButton {...data.filter(val => val.name === selected)[0]} />
         <PopoverTrigger asChild>
           <Button
             variant={"ghost"}
@@ -58,15 +66,18 @@ export const ToolbarSelect = ({
         )}
         side={isDirectionVertical ? "right" : "bottom"}
       >
-        {displayedData.map((toolbar, i) => (    
+        {data
+          .filter(val => val.name !== selected)
+          .reverse()
+          .map((toolbar: IToolbar, i) => (    
           <ToolbarButton
             key={toolbar.name}
+            {...toolbar}
             onClick={() => {
               setShow(false);
-              setSelected(_ => toolbar.name);
+              setSelected(toolbar.name);
               toolbar.onClick?.();
             }}
-            {...toolbar}
           />
         ))}
       </PopoverContent>

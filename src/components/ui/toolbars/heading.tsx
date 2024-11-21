@@ -72,6 +72,7 @@ export const HeadingToolbar = ({
 }) => {
   return (
     <ToolbarSelect
+      editor={editor}
       data={toolbarHeading(editor)}
       direction={direction}
     />
