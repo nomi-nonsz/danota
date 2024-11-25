@@ -4,7 +4,6 @@ import { ArrowDownWideNarrowIcon, ArrowUpDownIcon } from "lucide-react"
 
 import { Button } from "../ui/button"
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover"
-import { Checkbox } from "../ui/checkbox"
 
 import {
   Select,
@@ -13,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 
 export const NotesFilter = () => {
   return (
@@ -25,24 +25,24 @@ export const NotesFilter = () => {
       </PopoverTrigger>
       <PopoverContent className="p-0">
         <form onSubmit={(e) => { e.preventDefault() }}>
-          <div className="p-2">
-            <label className="flex items-center gap-2 p-2">
-              <Checkbox />
+          <RadioGroup className="p-4" defaultValue="date">
+            <label className="flex items-center gap-2">
+              <RadioGroupItem value="title" />
               By title
             </label>
-            <label className="flex items-center gap-2 p-2">
-              <Checkbox />
+            <label className="flex items-center gap-2">
+              <RadioGroupItem value="date" />
               By date
             </label>
-            <label className="flex items-center gap-2 p-2">
-              <Checkbox />
+            <label className="flex items-center gap-2">
+              <RadioGroupItem value="star" />
               By star
             </label>
-            <label className="flex items-center gap-2 p-2">
-              <Checkbox />
+            <label className="flex items-center gap-2">
+              <RadioGroupItem value="comments" />
               By comments
             </label>
-          </div>
+          </RadioGroup>
           <div className="border-b"></div>
           <div className="p-2">
             <Select defaultValue="desc">
