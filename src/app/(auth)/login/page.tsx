@@ -5,8 +5,8 @@ import { Link } from "@/components/ui/link";
 export default function LoginPage () {
   return (
     <main className="">
-      <div className="my-20">
-        <Card className="w-[380px] mx-auto">
+      <div className="sm:my-20 my-6">
+        <Card className="w-[380px] mx-auto sm:border-solid border-none">
           <CardHeader className="">
             <CardTitle className="text-2xl font-bold">
               Login
