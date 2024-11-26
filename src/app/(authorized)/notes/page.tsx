@@ -8,7 +8,7 @@ import { poppins } from "@/lib/fonts"
 export default function NotesPage () {
   return (
     <main className="h-full flex flex-col gap-3">
-      <WorkContainer>
+      <WorkContainer className="sm:p-0 px-4">
         <div className="fixed top-4 right-4">
           <ProfileBar />
         </div>
@@ -17,7 +17,7 @@ export default function NotesPage () {
         </header>
         <NotesBar />
       </WorkContainer>
-      <div className="flex-grow overflow-y-scroll py-4">
+      <div className="flex-grow overflow-y-scroll p-4">
         <WorkContainer className="flex flex-col gap-4">
           {Array(5).fill("").map((_, a) => 
             <NoteItem
