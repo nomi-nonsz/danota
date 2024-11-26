@@ -3,6 +3,7 @@
 import { poppins } from "@/lib/fonts";
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 const HeroHeadAnimation = () => {
   const texts = [
@@ -56,11 +57,13 @@ const HeroHeadAnimation = () => {
 export default function Hero () {
   return (
     <section className="h-[70vh] text-center flex align-middle justify-center">
-      <header className="h-fit my-auto w-[480px]">
+      <header className="h-fit my-auto w-[480px] sm:mx-0 mx-8">
         <h1 className={`font-bold text-3xl mb-6 ${poppins.className}`}>
-          Write your note️, share with your <HeroHeadAnimation /><span className="font-normal animate-blink-anim">|</span>, 🚀 online
+          Write your note, share with your <HeroHeadAnimation /><span className="font-normal animate-blink-anim">|</span>, 🚀 online
         </h1>
-        <Button className="font-bold">Create One</Button>
+        <Link href={"/signup"}>
+          <Button className="font-bold">Create One</Button>
+        </Link>
       </header>
     </section>
   )
