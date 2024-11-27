@@ -17,7 +17,7 @@ export default function NotesPage () {
         </header>
         <NotesBar />
       </WorkContainer>
-      <div className="flex-grow overflow-y-scroll p-4">
+      <div className="flex-grow sm:overflow-y-scroll p-4">
         <WorkContainer className="flex flex-col gap-4">
           {Array(5).fill("").map((_, a) => 
             <NoteItem
