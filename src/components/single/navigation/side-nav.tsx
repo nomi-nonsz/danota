@@ -7,12 +7,18 @@ import { NavLinks } from "./nav-links"
 import { Button } from "@/components/ui/button"
 import { ChevronsLeftIcon, LogOutIcon, MoonIcon } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useResponsive } from "@/hooks/use-responsive"
 
 export const SideNav = () => {
+  const { isTablet } = useResponsive();
   const [expanded, setExpanded] = useState<boolean>(true);
 
   const toggleExpand = () => setExpanded(val => !val);
+
+  useEffect(() => {
+    setExpanded(!isTablet);
+  }, [isTablet])
 
   return (
     <div className={cn(
