@@ -12,8 +12,8 @@ export default function NotesPage () {
         <div className="sm:fixed w-fit sm:ms-0 ms-auto top-4 right-4 sm:pt-0 pt-4">
           <ProfileBar />
         </div>
-        <header className="my-16 text-center">
-          <h1 className={`text-4xl font-bold ${poppins.className}`}>Your Notes</h1>
+        <header className="sm:my-16 my-8 text-center">
+          <h1 className={`sm:text-4xl text-2xl font-bold ${poppins.className}`}>Your Notes</h1>
         </header>
         <NotesBar />
       </WorkContainer>
