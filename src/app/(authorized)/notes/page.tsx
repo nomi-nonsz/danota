@@ -24,7 +24,7 @@ export default function NotesPage () {
           <NotesBar />
         </div>
         {/* suspense this */}
-        <WorkContainer className="flex flex-col gap-4">
+        <WorkContainer className="flex flex-col sm:gap-4 gap-2">
           {Array(5).fill("").map((_, a) => 
             <NoteItem
               key={a}
