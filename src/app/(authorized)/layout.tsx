@@ -24,7 +24,7 @@ export default async function AdminLayout({
         <div className="relative flex-grow bg-background-2 sm:overflow-y-auto overflow-y-scroll">
           {children}
         </div>
-        <div className="sticky bottom-0">
+        <div className="sm:hidden block sticky bottom-0">
           <BottomNav />
         </div>
       </main>
