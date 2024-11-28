@@ -19,7 +19,9 @@ export const NotesBar = () => {
         onClick={noteModal.onOpen}
       >
         <PlusIcon />
-        Create new
+        <span className="sm:inline hidden">
+          Create new
+        </span>
       </Button>
     </div>
   )

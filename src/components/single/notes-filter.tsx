@@ -20,7 +20,9 @@ export const NotesFilter = () => {
       <PopoverTrigger asChild>
         <Button variant={"outline-2"} className="h-12 text-md [&_svg]:size-5">
           <ArrowDownWideNarrowIcon />
-          Sort
+          <span className="sm:inline hidden">
+            Sort
+          </span>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0">
