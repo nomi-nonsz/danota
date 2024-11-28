@@ -22,7 +22,7 @@ export const AccountSettingsForm = ({
 
   return (
     <div className="space-y-3">
-      <div className="flex gap-4">
+      <div className="flex sm:flex-row flex-col gap-4">
         <FormField
           control={form.control}
           name="username"
@@ -63,7 +63,7 @@ export const AccountSettingsForm = ({
           <FormItem className="flex-1">
             <FormLabel>Email</FormLabel>
             <FormControl>
-              <Input className="w-auto" type="email" placeholder="Enter email" {...field} />
+              <Input className="sm:w-auto w-full" type="email" placeholder="Enter email" {...field} />
             </FormControl>
             <FormDescription>
               If anything happens to your account, we will send it to this address
