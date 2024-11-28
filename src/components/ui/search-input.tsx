@@ -5,11 +5,13 @@ import { SearchIcon } from "lucide-react"
 import { forwardRef } from "react"
 
 interface ISearchInput extends React.InputHTMLAttributes<HTMLDivElement> {
-  field?: HTMLInputElement
+  field?: HTMLInputElement,
+  onFocusInput?: (e: React.FocusEvent<HTMLInputElement>) => void,
+  onBlurInput?: (e: React.FocusEvent<HTMLInputElement>) => void
 }
 
 export const SearchInput = forwardRef<HTMLDivElement, ISearchInput>(
-  ({ className, field, ...props }, ref) => {
+  ({ className, field, onFocusInput, onBlurInput, ...props }, ref) => {
     return (
       <div
         className={cn(
@@ -29,6 +31,8 @@ export const SearchInput = forwardRef<HTMLDivElement, ISearchInput>(
             "w-full p-3 ps-12 bg-transparent",
             field?.className
           )}
+          onFocus={onFocusInput}
+          onBlur={onBlurInput}
         />
       </div>
     )
