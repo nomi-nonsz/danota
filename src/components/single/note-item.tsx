@@ -52,20 +52,22 @@ export const NoteItem: React.FC<NoteItemProps> = ({
   return (
     <div className="border rounded-md bg-background">
       <button className='p-6 text-left bg-background hover:bg-accent rounded-md'>
-        <article className="space-y-2 [&_p]:text-muted-foreground">
-          <h4 className="font-bold">How to make crispiest french fries</h4>
+        <article className="space-y-2 [&_p]:text-muted-foreground sm:[&_p]:text-base [&_p]:text-xs">
+          <h3 className="font-bold sm:text-base text-lg">How to make crispiest french fries</h3>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.</p>
           <p>Nullam quis imperdiet augue. Vestibulum auctor ornare leo, non suscipit....</p>
         </article>
       </button>
       <hr className="border-border" />
       <section className="p-4 flex justify-between items-center">
-        <div className="flex gap-3 text-sm p-2">
+        <div className="flex gap-3 sm:text-sm text-xs p-2">
           <Icon size={20} />
           <div className='border-s' />
           <div className="flex items-center gap-1">
             <LockIcon size={16} />
-            {isPublic ? 'Public' : 'Private'}
+            <span className="sm:inline hidden">
+              {isPublic ? 'Public' : 'Private'}
+            </span>
           </div>
           {isPublic && <>
             <div className="flex items-center gap-1">
@@ -80,7 +82,7 @@ export const NoteItem: React.FC<NoteItemProps> = ({
           <div className='border-s' />
           <div className="">
             {format(date, "K:mm a")}
-            <span className="text-muted-foreground mx-2">·</span>
+            <span className="text-muted-foreground mx-1">·</span>
             {format(date, "MMM d, y")}
           </div>
         </div>

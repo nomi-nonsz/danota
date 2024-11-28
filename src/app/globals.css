@@ -81,7 +81,7 @@ body {
 
 @layer components {
   .home-container {
-    @apply px-36
+    @apply md:px-36 sm:px-24 px-6
   }
 
   .note-editor > .tiptap h1 {

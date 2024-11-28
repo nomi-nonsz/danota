@@ -1,11 +1,12 @@
 'use client'
 
-import { Button } from "@/components/ui/button";
-import { useNoteModal } from "@/hooks/disclosures/use-notemodal";
-import { cn } from "@/lib/utils";
-import { icons } from "lucide-react"
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { icons } from "lucide-react"
+
+import { cn } from "@/lib/utils";
+import { useNoteModal } from "@/hooks/disclosures/use-notemodal";
+import { Button } from "@/components/ui/button";
 
 const navigations = [
   {
