@@ -4,6 +4,8 @@ import { SideNav } from "@/components/single/navigation/side-nav";
 import { NoteModal } from "@/components/single/modal/note-modal";
 import { AlertDialog } from "@/components/single/modal/alert-dialog";
 import { BottomNav } from "@/components/single/navigation/bottom-nav";
+import { getCurrentUser } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -15,6 +17,10 @@ export default async function AdminLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser) redirect("/");
+
   return (
     <>
       <main className="flex sm:flex-row flex-col h-screen">

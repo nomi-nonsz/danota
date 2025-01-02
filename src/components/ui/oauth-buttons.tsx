@@ -23,8 +23,8 @@ export const OAuthButtons = () => {
   return (
     <div className="flex flex-row gap-2">
       {oauths.map((oauth) => (
-        <button  key={oauth.name} className="border p-3 rounded-xl w-full flex justify-center" onClick={oauth.onclick}>
-          <oauth.icon size={20} />
+        <button  key={oauth.name} className="border p-4 rounded-xl w-full flex justify-center" onClick={oauth.onclick}>
+          <oauth.icon size={24} />
         </button>
       ))}
     </div>

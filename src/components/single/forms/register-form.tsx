@@ -6,22 +6,20 @@ import { Form, FormField, FormItem, FormControl, FormMessage, FormLabel } from "
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { Link } from "@/components/ui/link"
 import { OAuthButtons } from "@/components/ui/oauth-buttons"
 import { SeparatorText } from "@/components/ui/separator-text"
 import { useRefreshAlert } from "@/hooks/use-refresh-alert"
+import { useAction } from "@/hooks/use-action"
+import Link from "next/link"
+import { signupSchema } from "@/schemas/auth-schema"
 
-const signupSchema = z.object({
-  email: z.string().email().min(2).max(50),
-  username: z.string().min(2),
-  displayName: z.string(),
-  password: z.string().min(6)
-})
+export const RegisterForm = ({ csrfToken }: { csrfToken: string }) => {
+  const { post, pending } = useAction();
 
-export const RegisterForm = () => {
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
+      csrfToken,
       email: "",
       username: "",
       displayName: "",
@@ -32,14 +30,20 @@ export const RegisterForm = () => {
   // useRefreshAlert(form.formState.isDirty);
  
   function onSubmit(values: z.infer<typeof signupSchema>) {
-    console.log(values)
+    post("/api/user", values, {
+      success: {
+        title: "Account creation success!",
+        description: <><Link  href="/login">Login</Link> to continue the app</>,
+      },
+      redirect: () => `/login`,
+    });
   }
 
   return (
     <Form {...form}>
       <OAuthButtons />
       <SeparatorText text="Or" className="my-1" />
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="email"
@@ -47,9 +51,9 @@ export const RegisterForm = () => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="joe.mama@example.com" {...field} />
+                <Input className="px-5 py-6" type="email" placeholder="joe.mama@example.com" {...field} />
               </FormControl>
-              <FormMessage className="text-xs" />
+              <FormMessage className="text-sm" />
             </FormItem>
           )}
         />
@@ -60,9 +64,9 @@ export const RegisterForm = () => {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input type="text" placeholder="joemama213" {...field} />
+                <Input className="px-5 py-6" type="text" placeholder="joemama213" {...field} />
               </FormControl>
-              <FormMessage className="text-xs" />
+              <FormMessage className="text-sm" />
             </FormItem>
           )}
         />
@@ -73,9 +77,9 @@ export const RegisterForm = () => {
             <FormItem>
               <FormLabel>Display Name</FormLabel>
               <FormControl>
-                <Input type="text" placeholder="Joe Mama" {...field} />
+                <Input className="px-5 py-6" type="text" placeholder="Joe Mama" {...field} />
               </FormControl>
-              <FormMessage className="text-xs" />
+              <FormMessage className="text-sm" />
             </FormItem>
           )}
         />
@@ -86,13 +90,19 @@ export const RegisterForm = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="Min. 6 Caracters" {...field} />
+                <Input className="px-5 py-6" type="password" placeholder="Min. 6 Caracters" {...field} />
               </FormControl>
-              <FormMessage className="text-xs" />
+              <FormMessage className="text-sm" />
             </FormItem>
           )}
         />
-        <Button className="w-full font-bold py-4 h-fit" type="submit">Continue</Button>
+        <Button
+          className="w-full font-bold py-4 text-lg h-fit"
+          type="submit"
+          disabled={pending}
+        >
+          Continue
+        </Button>
       </form>
     </Form>
   )

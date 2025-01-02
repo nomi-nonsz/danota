@@ -9,12 +9,20 @@ import { ChevronsLeftIcon, LogOutIcon, MoonIcon } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { useEffect, useState } from "react"
 import { useResponsive } from "@/hooks/use-responsive"
+import { signOut } from "next-auth/react"
 
 export const SideNav = () => {
   const { isTablet } = useResponsive();
   const [expanded, setExpanded] = useState<boolean>(true);
 
   const toggleExpand = () => setExpanded(val => !val);
+
+  const handleLogout = () => {
+    signOut({
+      redirect: true,
+      redirectTo: '/'
+    })
+  }
 
   useEffect(() => {
     setExpanded(!isTablet);
@@ -53,7 +61,7 @@ export const SideNav = () => {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant={'ghost'}>
+              <Button variant={'ghost'} onClick={handleLogout}>
                 <LogOutIcon className="rotate-180" />
               </Button>
             </TooltipTrigger>
