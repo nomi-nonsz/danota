@@ -1,25 +1,32 @@
 import { LoginForm } from "@/components/single/forms/login-form";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Link } from "@/components/ui/link";
+import { genCsrf } from "@/lib/csrf";
+import type { Metadata } from 'next'
+ 
+export const metadata: Metadata = {
+  title: 'Login Danota',
+  description: 'Continue to Danota App',
+}
 
 export default function LoginPage () {
+  const csrfToken = genCsrf();
+
   return (
-    <main className="">
-      <div className="sm:my-20 my-6">
-        <Card className="w-[380px] mx-auto sm:border-solid border-none">
-          <CardHeader className="">
-            <CardTitle className="text-2xl font-bold">
-              Login
-            </CardTitle>
-            <p className="text-sm">
-              Don't have any account? <Link href="/signup">Create new</Link>
-            </p>
-          </CardHeader>
-          <CardContent>
-            <LoginForm />
-          </CardContent>
-        </Card>      
+    <div className="sm:my-20 my-6 flex-1">
+      <div className="w-[480px] mx-auto">
+        <CardHeader className="">
+          <CardTitle className="text-3xl font-bold">
+            Login
+          </CardTitle>
+          <p className="text-sm">
+            Don't have any account? <Link href="/signup">Create new</Link>
+          </p>
+        </CardHeader>
+        <CardContent>
+          <LoginForm csrfToken={csrfToken} />
+        </CardContent>
       </div>
-    </main>
+    </div>
   )
 }
