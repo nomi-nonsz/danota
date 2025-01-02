@@ -14,7 +14,7 @@ export default function SignupPage () {
   const csrfToken = genCsrf();
 
   return (
-    <div className="sm:my-20 my-6 flex-1">
+    <div className="sm:py-20 py-6 flex-1 overflow-y-scroll">
       <div className="w-[480px] mx-auto">
         <CardHeader className="">
           <CardTitle className="text-3xl font-bold">

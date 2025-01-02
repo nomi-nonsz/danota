@@ -12,6 +12,7 @@ import { useRefreshAlert } from "@/hooks/use-refresh-alert"
 import { useAction } from "@/hooks/use-action"
 import Link from "next/link"
 import { signupSchema } from "@/schemas/auth-schema"
+import { AvatarInput } from "@/components/ui/avatar-input"
 
 export const RegisterForm = ({ csrfToken }: { csrfToken: string }) => {
   const { post, pending } = useAction();
@@ -20,6 +21,7 @@ export const RegisterForm = ({ csrfToken }: { csrfToken: string }) => {
     resolver: zodResolver(signupSchema),
     defaultValues: {
       csrfToken,
+      image: null,
       email: "",
       username: "",
       displayName: "",
@@ -44,6 +46,21 @@ export const RegisterForm = ({ csrfToken }: { csrfToken: string }) => {
       <OAuthButtons />
       <SeparatorText text="Or" className="my-1" />
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="image"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <AvatarInput field={{
+                  value: field.value ?? "",
+                  onChange: field.onChange
+                }} />
+              </FormControl>
+              <FormMessage className="text-sm" />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="email"
