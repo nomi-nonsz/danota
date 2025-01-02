@@ -63,4 +63,6 @@ export const authOptions: NextAuthConfig = {
   secret: process.env.NEXTAUTH_SECRET
 }
 
+export const getSession = () => auth().catch(() => null);
+
 export const { handlers, signIn, signOut, auth } = NextAuth(authOptions);

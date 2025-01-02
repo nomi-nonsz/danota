@@ -1,9 +1,12 @@
 import { LoginForm } from "@/components/single/forms/login-form";
 import { CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Link } from "@/components/ui/link";
+import { genCsrf } from "@/lib/csrf";
 import Image from "next/image";
 
 export default function LoginPage () {
+  const csrfToken = genCsrf();
+
   return (
     <main className="flex flex-row h-screen">
       <Image
@@ -24,7 +27,7 @@ export default function LoginPage () {
             </p>
           </CardHeader>
           <CardContent>
-            <LoginForm />
+            <LoginForm csrfToken={csrfToken} />
           </CardContent>
         </div>
       </div>

@@ -2,9 +2,12 @@
 import { RegisterForm } from "@/components/single/forms/register-form";
 import { CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Link } from "@/components/ui/link";
+import { genCsrf } from "@/lib/csrf";
 import Image from "next/image";
 
 export default function SignupPage () {
+  const csrfToken = genCsrf();
+
   return (
     <main className="flex flex-row h-screen">
       <Image
@@ -25,7 +28,7 @@ export default function SignupPage () {
             </p>
           </CardHeader>
           <CardContent>
-            <RegisterForm />
+            <RegisterForm csrfToken={csrfToken} />
           </CardContent>
         </div>
       </div>

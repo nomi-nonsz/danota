@@ -9,18 +9,17 @@ import { z } from "zod"
 import { OAuthButtons } from "@/components/ui/oauth-buttons"
 import { SeparatorText } from "@/components/ui/separator-text"
 import { useRefreshAlert } from "@/hooks/use-refresh-alert"
+import { useAction } from "@/hooks/use-action"
+import Link from "next/link"
+import { signupSchema } from "@/schemas/auth-schema"
 
-const signupSchema = z.object({
-  email: z.string().email().min(2).max(50),
-  username: z.string().min(2),
-  displayName: z.string(),
-  password: z.string().min(6)
-})
+export const RegisterForm = ({ csrfToken }: { csrfToken: string }) => {
+  const { post, pending } = useAction();
 
-export const RegisterForm = () => {
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
+      csrfToken,
       email: "",
       username: "",
       displayName: "",
@@ -31,7 +30,13 @@ export const RegisterForm = () => {
   // useRefreshAlert(form.formState.isDirty);
  
   function onSubmit(values: z.infer<typeof signupSchema>) {
-    console.log(values)
+    post("/api/user", values, {
+      success: {
+        title: "Account creation success!",
+        description: <><Link  href="/signin">Sign in</Link> to continue the app</>,
+      },
+      redirect: () => `/`,
+    });
   }
 
   return (
@@ -91,7 +96,13 @@ export const RegisterForm = () => {
             </FormItem>
           )}
         />
-        <Button className="w-full font-bold py-4 text-lg h-fit" type="submit">Continue</Button>
+        <Button
+          className="w-full font-bold py-4 text-lg h-fit"
+          type="submit"
+          disabled={pending}
+        >
+          Continue
+        </Button>
       </form>
     </Form>
   )
