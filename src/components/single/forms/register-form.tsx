@@ -33,9 +33,9 @@ export const RegisterForm = ({ csrfToken }: { csrfToken: string }) => {
     post("/api/user", values, {
       success: {
         title: "Account creation success!",
-        description: <><Link  href="/signin">Sign in</Link> to continue the app</>,
+        description: <><Link  href="/login">Login</Link> to continue the app</>,
       },
-      redirect: () => `/`,
+      redirect: () => `/login`,
     });
   }
 
@@ -53,7 +53,7 @@ export const RegisterForm = ({ csrfToken }: { csrfToken: string }) => {
               <FormControl>
                 <Input className="px-5 py-6" type="email" placeholder="joe.mama@example.com" {...field} />
               </FormControl>
-              <FormMessage className="text-xs" />
+              <FormMessage className="text-sm" />
             </FormItem>
           )}
         />
@@ -66,7 +66,7 @@ export const RegisterForm = ({ csrfToken }: { csrfToken: string }) => {
               <FormControl>
                 <Input className="px-5 py-6" type="text" placeholder="joemama213" {...field} />
               </FormControl>
-              <FormMessage className="text-xs" />
+              <FormMessage className="text-sm" />
             </FormItem>
           )}
         />
@@ -79,7 +79,7 @@ export const RegisterForm = ({ csrfToken }: { csrfToken: string }) => {
               <FormControl>
                 <Input className="px-5 py-6" type="text" placeholder="Joe Mama" {...field} />
               </FormControl>
-              <FormMessage className="text-xs" />
+              <FormMessage className="text-sm" />
             </FormItem>
           )}
         />
@@ -92,7 +92,7 @@ export const RegisterForm = ({ csrfToken }: { csrfToken: string }) => {
               <FormControl>
                 <Input className="px-5 py-6" type="password" placeholder="Min. 6 Caracters" {...field} />
               </FormControl>
-              <FormMessage className="text-xs" />
+              <FormMessage className="text-sm" />
             </FormItem>
           )}
         />

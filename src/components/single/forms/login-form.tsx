@@ -10,7 +10,7 @@ import { Link } from "@/components/ui/link"
 import { OAuthButtons } from "@/components/ui/oauth-buttons"
 import { SeparatorText } from "@/components/ui/separator-text"
 import { useRefreshAlert } from "@/hooks/use-refresh-alert"
-import { signIn } from "@/lib/auth"
+import { signIn } from "next-auth/react"
 import { toast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -23,6 +23,7 @@ const loginSchema = z.object({
 export const LoginForm = ({ csrfToken }: { csrfToken: string }) => {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -36,6 +37,7 @@ export const LoginForm = ({ csrfToken }: { csrfToken: string }) => {
  
   async function onSubmit(values: z.infer<typeof loginSchema>) {
     setLoading(true);
+    setError("");
 
     try {
       const result = await signIn('credentials', {
@@ -51,18 +53,14 @@ export const LoginForm = ({ csrfToken }: { csrfToken: string }) => {
       
       toast({
         title: "Sign in success!",
-        description: "You can continue the app",
+        description: "You can continue to the app",
       })
 
-      router.push("/");
+      router.push("/notes");
     }
     catch (err: any) {
       const message = err.x_message || err.response?.data?.message || "Something went wrong";
-      toast({
-        title: "Error",
-        description: message,
-        variant: "destructive"
-      })
+      setError(message);
     }
     finally {
       setLoading(false);
@@ -82,7 +80,7 @@ export const LoginForm = ({ csrfToken }: { csrfToken: string }) => {
               <FormControl>
                 <Input className="px-5 py-6" type="email" placeholder="Email" {...field} />
               </FormControl>
-              <FormMessage className="text-xs" />
+              <FormMessage className="text-sm" />
             </FormItem>
           )}
         />
@@ -94,13 +92,14 @@ export const LoginForm = ({ csrfToken }: { csrfToken: string }) => {
               <FormControl>
                 <Input className="px-5 py-6" type="password" placeholder="Password" {...field} />
               </FormControl>
-              <FormMessage className="text-xs" />
+              <FormMessage className="text-sm" />
             </FormItem>
           )}
         />
         <div className="text-sm">
           <Link href="/forgot-password">Forgot Password?</Link>
         </div>
+        <div className="text-destructive">{error}</div>
         <Button
           className="w-full font-bold py-4 h-fit text-lg"
           type="submit"

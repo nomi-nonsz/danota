@@ -8,6 +8,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 
 import bcrypt from "bcryptjs";
 import prisma from "@/lib/prisma";
+import { ClientUser } from "@/types/prisma";
 
 class InvalidLoginError extends CredentialsSignin {
   code = "Invalid Credentials";
@@ -64,5 +65,31 @@ export const authOptions: NextAuthConfig = {
 }
 
 export const getSession = () => auth().catch(() => null);
+
+export async function getCurrentUser () {
+  try {
+    const session = await getSession();
+
+    if (!session?.user?.email) return null;
+
+    const user: ClientUser | null = await prisma.user.findUnique({
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        username: true,
+        image: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+      where: { email: session.user.email }
+    });
+
+    return user;
+  }
+  catch (err: any) {
+    return null
+  }
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth(authOptions);
