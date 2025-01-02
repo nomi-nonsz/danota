@@ -35,14 +35,14 @@ export const LoginForm = () => {
     <Form {...form}>
       <OAuthButtons />
       <SeparatorText text="Or" className="my-1" />
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input type="email" placeholder="Email" {...field} />
+                <Input className="px-5 py-6" type="email" placeholder="Email" {...field} />
               </FormControl>
               <FormMessage className="text-xs" />
             </FormItem>
@@ -54,16 +54,16 @@ export const LoginForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input type="password" placeholder="Password" {...field} />
+                <Input className="px-5 py-6" type="password" placeholder="Password" {...field} />
               </FormControl>
               <FormMessage className="text-xs" />
             </FormItem>
           )}
         />
-        <div className="text-xs">
+        <div className="text-sm">
           <Link href="/forgot-password">Forgot Password?</Link>
         </div>
-        <Button className="w-full font-bold py-4 h-fit" type="submit">Continue</Button>
+        <Button className="w-full font-bold py-4 h-fit text-lg" type="submit">Continue</Button>
       </form>
     </Form>
   )

@@ -6,7 +6,6 @@ import { Form, FormField, FormItem, FormControl, FormMessage, FormLabel } from "
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { Link } from "@/components/ui/link"
 import { OAuthButtons } from "@/components/ui/oauth-buttons"
 import { SeparatorText } from "@/components/ui/separator-text"
 import { useRefreshAlert } from "@/hooks/use-refresh-alert"
@@ -39,7 +38,7 @@ export const RegisterForm = () => {
     <Form {...form}>
       <OAuthButtons />
       <SeparatorText text="Or" className="my-1" />
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="email"
@@ -47,7 +46,7 @@ export const RegisterForm = () => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="joe.mama@example.com" {...field} />
+                <Input className="px-5 py-6" type="email" placeholder="joe.mama@example.com" {...field} />
               </FormControl>
               <FormMessage className="text-xs" />
             </FormItem>
@@ -60,7 +59,7 @@ export const RegisterForm = () => {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input type="text" placeholder="joemama213" {...field} />
+                <Input className="px-5 py-6" type="text" placeholder="joemama213" {...field} />
               </FormControl>
               <FormMessage className="text-xs" />
             </FormItem>
@@ -73,7 +72,7 @@ export const RegisterForm = () => {
             <FormItem>
               <FormLabel>Display Name</FormLabel>
               <FormControl>
-                <Input type="text" placeholder="Joe Mama" {...field} />
+                <Input className="px-5 py-6" type="text" placeholder="Joe Mama" {...field} />
               </FormControl>
               <FormMessage className="text-xs" />
             </FormItem>
@@ -86,13 +85,13 @@ export const RegisterForm = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="Min. 6 Caracters" {...field} />
+                <Input className="px-5 py-6" type="password" placeholder="Min. 6 Caracters" {...field} />
               </FormControl>
               <FormMessage className="text-xs" />
             </FormItem>
           )}
         />
-        <Button className="w-full font-bold py-4 h-fit" type="submit">Continue</Button>
+        <Button className="w-full font-bold py-4 text-lg h-fit" type="submit">Continue</Button>
       </form>
     </Form>
   )

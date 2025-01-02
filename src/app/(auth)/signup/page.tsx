@@ -1,15 +1,23 @@
 
 import { RegisterForm } from "@/components/single/forms/register-form";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Link } from "@/components/ui/link";
+import Image from "next/image";
 
 export default function SignupPage () {
   return (
-    <main className="">
-      <div className="sm:my-20 my-6">
-        <Card className="w-[380px] mx-auto sm:border-solid border-none">
+    <main className="flex flex-row h-screen">
+      <Image
+        className="hidden sm:block flex-1 object-cover pointer-events-none"
+        src={"/images/blackbeard.jpg"}
+        alt="blackbeard"
+        width="1280"
+        height="1280"
+      />
+      <div className="sm:my-20 my-6 flex-1">
+        <div className="w-[480px] mx-auto">
           <CardHeader className="">
-            <CardTitle className="text-2xl font-bold">
+            <CardTitle className="text-3xl font-bold">
               Create a new account
             </CardTitle>
             <p className="text-sm">
@@ -19,7 +27,7 @@ export default function SignupPage () {
           <CardContent>
             <RegisterForm />
           </CardContent>
-        </Card>      
+        </div>
       </div>
     </main>
   )
