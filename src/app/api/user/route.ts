@@ -1,18 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import prisma from "@/lib/prisma";
-import { getSession } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/auth";
 import { verifyCsrf } from "@/lib/csrf";
 import { signupSchema } from "@/schemas/auth-schema";
 
 import bcrypt from "bcryptjs";
 
 export async function POST (req: NextRequest) {
-  const session = await getSession();
+  const currentUser = await getCurrentUser();
   const body = await req.json();
   const validate = signupSchema.safeParse(body);
 
-  if (session)
+  if (currentUser)
     return NextResponse.json(
       { message: "you already login, you are not permitted creating an account" },
       { status: 403 }
@@ -27,6 +27,7 @@ export async function POST (req: NextRequest) {
   const {
     csrfToken,
     displayName,
+    image,
     email,
     password,
     username
@@ -36,7 +37,7 @@ export async function POST (req: NextRequest) {
   if (!verifyCsrf(csrfToken))
     return NextResponse.json(
       { message: "csrf not valid" },
-      { status: 401 }
+      { status: 419 }
     );
 
   const user = await prisma.user.findUnique({
@@ -60,6 +61,7 @@ export async function POST (req: NextRequest) {
       username,
       name: displayName,
       email,
+      image,
       hash,
     }
   })
