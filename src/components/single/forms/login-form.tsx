@@ -101,9 +101,9 @@ export const LoginForm = ({ csrfToken }: { csrfToken: string }) => {
         </div>
         <div className="text-destructive">{error}</div>
         <Button
-          className="w-full font-bold py-4 h-fit text-lg"
+          className="w-full font-bold py-4 h-fit text-lg [&_svg]:size-7"
           type="submit"
-          disabled={loading}
+          isLoading={loading}
         >
           Continue
         </Button>

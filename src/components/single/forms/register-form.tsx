@@ -15,7 +15,7 @@ import { signupSchema } from "@/schemas/auth-schema"
 import { AvatarInput } from "@/components/ui/avatar-input"
 
 export const RegisterForm = ({ csrfToken }: { csrfToken: string }) => {
-  const { post, pending } = useAction();
+  const { post, pending, errorMessage } = useAction();
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
@@ -113,10 +113,13 @@ export const RegisterForm = ({ csrfToken }: { csrfToken: string }) => {
             </FormItem>
           )}
         />
+        <div className="text-sm text-destructive">
+          {errorMessage}
+        </div>
         <Button
-          className="w-full font-bold py-4 text-lg h-fit"
+          className="w-full font-bold py-4 text-lg h-fit [&_svg]:size-7"
           type="submit"
-          disabled={pending}
+          isLoading={pending}
         >
           Continue
         </Button>

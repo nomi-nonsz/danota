@@ -14,13 +14,13 @@ export async function POST (req: NextRequest) {
 
   if (currentUser)
     return NextResponse.json(
-      { message: "you already login, you are not permitted creating an account" },
+      { message: "You already Login, You are not permitted creating a new account" },
       { status: 403 }
     );
 
   if (!validate.success)
     return NextResponse.json(
-      { message: "signup failed" },
+      { message: "Signup failed" },
       { status: 401 }
     );
 
@@ -46,7 +46,7 @@ export async function POST (req: NextRequest) {
 
   if (user)
     return NextResponse.json(
-      { message: "signup failed" },
+      { message: "Signup failed" },
       { status: 401 }
     );
 
@@ -66,5 +66,5 @@ export async function POST (req: NextRequest) {
     }
   })
 
-  return NextResponse.json({ message: "account created", data: newUser }, { status: 201 });
+  return NextResponse.json({ message: "Account created", data: newUser }, { status: 201 });
 }

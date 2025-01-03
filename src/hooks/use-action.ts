@@ -21,6 +21,7 @@ export function useAction () {
   const { toast } = useToast();
 
   const [isPending, setPending] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>("");
 
   async function action (req: () => Promise<AxiosResponse>, config?: PostConfig) {
     setPending(true);
@@ -42,7 +43,7 @@ export function useAction () {
         router.refresh();
     }
     catch (err) {
-      let message = config?.error?.defaultDescription ?? "Something went wrong";
+      let message = config?.error?.defaultDescription ?? "Something went wrong, try again later";
       
       if (axios.isAxiosError(err)) {
         if (err.code === 'ECONNABORTED') {
@@ -52,11 +53,13 @@ export function useAction () {
         }
       }
 
-      toast({
-        title: "Error",
-        description: message,
-        variant: "destructive"
-      })
+      // toast({
+      //   title: "Error",
+      //   description: message,
+      //   variant: "destructive"
+      // })
+
+      setError(message);
     }
     finally {
       setPending(false);
@@ -93,6 +96,7 @@ export function useAction () {
   
   return {
     pending: isPending,
+    errorMessage: error,
     post,
     patch,
     remove

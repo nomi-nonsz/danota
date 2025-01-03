@@ -34,8 +34,6 @@ export const authOptions: NextAuthConfig = {
         password: { label: 'password', type: 'password' }
       },
       async authorize(credentials) {
-        console.log("Logging in...");
-
         if (!credentials?.email || !credentials?.password) {
           throw new InvalidLoginError();
         }
@@ -47,6 +45,7 @@ export const authOptions: NextAuthConfig = {
         const isCorrectPassword = await bcrypt.compare(credentials.password as string, hashedPassword);
 
         if (!isCorrectPassword) {
+          await new Promise((res) => setTimeout(res, 1000));
           throw new InvalidLoginError();
         }
 
