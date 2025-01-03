@@ -4,12 +4,14 @@ import { Badge } from "@/components/ui/badge";
 import { ProfileBar } from "@/components/ui/profile-bar";
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { LockIcon, PencilIcon } from "lucide-react";
+import { GlobeIcon, LockIcon, PencilIcon } from "lucide-react";
 
 export const EditorTopBar = ({
-  isScrolled
+  isScrolled, title, isPublic
 } : {
-  isScrolled?: boolean
+  isScrolled?: boolean,
+  title: string,
+  isPublic: boolean
 }) => {
   return (
     <div className={cn(
@@ -19,7 +21,7 @@ export const EditorTopBar = ({
     )}>
       <div className="space-y-2">
         <header className="flex gap-2 items-center">
-          <h1 className="text-3xl font-bold">My New note or sumthing</h1>
+          <h1 className="text-3xl font-bold">{title}</h1>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger className="p-3">
@@ -31,10 +33,15 @@ export const EditorTopBar = ({
             </Tooltip>
           </TooltipProvider>
         </header>
-        <div className="flex gap-3">
+        <div className="flex gap-3 items-center">
           <div className="flex gap-2">
-            <LockIcon size={20} />
-            Private
+            {isPublic ? <>
+              <GlobeIcon size={20} />
+              Publish
+            </> : <>
+              <LockIcon size={20} />
+              Private
+            </>}
           </div>
           <Badge variant="warning">Not saved</Badge>
         </div>

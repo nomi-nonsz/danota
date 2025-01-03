@@ -1,9 +1,16 @@
+import type { Metadata } from 'next'
+
 import { NoteItem } from "@/components/single/note-item"
 import { NotesBar } from "@/components/single/notes-bar"
 import { ProfileBar } from "@/components/ui/profile-bar"
 import { WorkContainer } from "@/components/ui/work-container"
 
 import { poppins } from "@/lib/fonts"
+ 
+export const metadata: Metadata = {
+  title: 'Your Notes',
+  description: 'This is where your notes saved',
+}
 
 export default function NotesPage () {
   return (

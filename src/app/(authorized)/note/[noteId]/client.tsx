@@ -11,7 +11,13 @@ import dynamic from "next/dynamic";
 
 const CanvasEditorProvider = dynamic(() => import('@/hooks/use-canvas-editor').then(c => c.CanvasEditorProvider), { ssr: false });
 
-export const NoteClient = () => {
+export const NoteClient = ({
+  title, isPublic, content
+}: {
+  title: string,
+  isPublic: boolean,
+  content: string
+}) => {
   const toolbarPos = useToolbarPosition();
 
   const [scroll, setScroll] = useState<number>(0);
@@ -24,9 +30,13 @@ export const NoteClient = () => {
       }}
     >
       <CanvasEditorProvider>
-        <EditorTopBar isScrolled={scroll > 20} />
+        <EditorTopBar
+          title={title}
+          isPublic={isPublic}
+          isScrolled={scroll > 20}
+        />
         <div className="py-10 text-center">
-          <NoteCanvas content={null} />
+          <NoteCanvas content={content} />
         </div>
         <div className={cn(
           "w-fit h-fit",
