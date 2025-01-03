@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { NoteClient } from "./client"
 import prisma from "@/lib/prisma"
 import { redirect } from "next/navigation"
+import { getCurrentUser } from "@/lib/auth"
 
 export async function generateMetadata(
   { params }: {
@@ -43,7 +44,9 @@ export default async function NotePage ({
     where: { id: params.noteId }
   });
 
+  const currentUser = await getCurrentUser();
+
   if (!note) redirect("/notes");
 
-  return <NoteClient {...note} />
+  return <NoteClient {...note} currentUser={currentUser} />
 }

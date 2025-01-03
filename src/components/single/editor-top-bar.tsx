@@ -4,11 +4,13 @@ import { Badge } from "@/components/ui/badge";
 import { ProfileBar } from "@/components/ui/profile-bar";
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { ClientUser } from "@/types/prisma";
 import { GlobeIcon, LockIcon, PencilIcon } from "lucide-react";
 
 export const EditorTopBar = ({
-  isScrolled, title, isPublic
+  isScrolled, currentUser, title, isPublic
 } : {
+  currentUser: ClientUser | null,
   isScrolled?: boolean,
   title: string,
   isPublic: boolean
@@ -46,7 +48,7 @@ export const EditorTopBar = ({
           <Badge variant="warning">Not saved</Badge>
         </div>
       </div>
-      <ProfileBar />
+      <ProfileBar currentUser={currentUser} />
     </div>
   )
 }
