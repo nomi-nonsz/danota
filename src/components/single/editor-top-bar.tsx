@@ -1,13 +1,12 @@
 'use client'
 
-import { Badge } from "@/components/ui/badge";
 import { ProfileBar } from "@/components/ui/profile-bar";
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { ClientUser } from "@/types/prisma";
 import { GlobeIcon, LockIcon, PencilIcon } from "lucide-react";
 import { EditableTitle } from "./editable-title";
 import { useNoteStore } from "@/hooks/use-note-store";
+import { CloudStatusBadge } from "../ui/cloud-status-badge";
 
 export const EditorTopBar = ({
   isScrolled, currentUser
@@ -15,7 +14,7 @@ export const EditorTopBar = ({
   currentUser: ClientUser | null,
   isScrolled?: boolean,
 }) => {
-  const { note } = useNoteStore();
+  const { note, status } = useNoteStore();
 
   return (
     <div className={cn(
@@ -35,7 +34,7 @@ export const EditorTopBar = ({
               Private
             </>}
           </div>
-          <Badge variant="warning">Not saved</Badge>
+          <CloudStatusBadge status={status} />
         </div>
       </div>
       <ProfileBar currentUser={currentUser} />

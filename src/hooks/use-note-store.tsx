@@ -6,14 +6,24 @@ import type { NoteClient } from "@/types/prisma";
 import { useAction } from "./use-action";
 import axios from "axios";
 
+export enum CloudStatus {
+  NOT_SAVED,
+  SAVING,
+  SAVED,
+}
+
 interface NoteStore {
   note: NoteClient;
+  status: CloudStatus;
   setNote: (note: NoteClient) => void;
+  setStatus: (status: CloudStatus) => void
 }
 
 export const NoteContext = createContext<NoteStore>({
   note: null as unknown as NoteClient,
-  setNote: () => {}
+  status: CloudStatus.NOT_SAVED,
+  setNote: () => {},
+  setStatus: () => {}
 });
 
 export const NoteProvider = ({
@@ -24,13 +34,14 @@ export const NoteProvider = ({
   children: React.ReactNode
 }) => {
   const [note, setNote] = useState<NoteClient>(initialNote);
+  const [status, setStatus] = useState<CloudStatus>(CloudStatus.NOT_SAVED);
 
-  return <NoteContext.Provider value={{ note, setNote }}>{children}</NoteContext.Provider>
+  return <NoteContext.Provider value={{ note, setNote, status, setStatus }}>{children}</NoteContext.Provider>
 }
 
 export const useNoteStore = () => {
   const { patch } = useAction();
-  const { note, setNote } = useContext(NoteContext);
+  const { note, setNote, status, setStatus } = useContext(NoteContext);
 
   const set = (key: keyof NoteClient, value: any) => {
     // @ts-ignore
@@ -49,19 +60,19 @@ export const useNoteStore = () => {
     setNote(res.data);
   }
 
-  const save = () => {
-    patch(`/api/notes/${note!.id}`, note, {
-      success: {
-        title: "Saved"
-      }
-    })
-  }
+  const save = () => patch(`/api/notes/${note!.id}`, note, {
+    success: {
+      title: "Saved"
+    }
+  })
 
   return {
     note,
     save,
     set,
     get,
-    refetch
+    refetch,
+    status,
+    setStatus
   }
 };

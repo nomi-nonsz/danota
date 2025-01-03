@@ -51,6 +51,6 @@ export const PATCH = authMiddleware(
       message: "Note updated",
       data: note
     }, {
-      status: 201
+      status: 200
     });
 })
