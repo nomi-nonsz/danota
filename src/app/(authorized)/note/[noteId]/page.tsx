@@ -4,6 +4,7 @@ import { NoteClient } from "./client"
 import prisma from "@/lib/prisma"
 import { redirect } from "next/navigation"
 import { getCurrentUser } from "@/lib/auth"
+import { NoteContext } from "@/hooks/use-note-store"
 
 export async function generateMetadata(
   { params }: {
@@ -33,6 +34,8 @@ export default async function NotePage ({
     noteId: string
   }
 }) {
+  const currentUser = await getCurrentUser();
+
   const note = await prisma.note.findFirst({
     select: {
       id: true,
@@ -41,12 +44,13 @@ export default async function NotePage ({
       isPublic: true,
       createdAt: true
     },
-    where: { id: params.noteId }
+    where: {
+      id: params.noteId,
+      userId: currentUser?.id
+    }
   });
-
-  const currentUser = await getCurrentUser();
 
   if (!note) redirect("/notes");
 
-  return <NoteClient {...note} currentUser={currentUser} />
+  return <NoteClient note={note} currentUser={currentUser} />
 }

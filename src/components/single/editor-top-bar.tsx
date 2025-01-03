@@ -6,15 +6,17 @@ import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/comp
 import { cn } from "@/lib/utils";
 import { ClientUser } from "@/types/prisma";
 import { GlobeIcon, LockIcon, PencilIcon } from "lucide-react";
+import { EditableTitle } from "./editable-title";
+import { useNoteStore } from "@/hooks/use-note-store";
 
 export const EditorTopBar = ({
-  isScrolled, currentUser, title, isPublic
+  isScrolled, currentUser
 } : {
   currentUser: ClientUser | null,
   isScrolled?: boolean,
-  title: string,
-  isPublic: boolean
 }) => {
+  const { note } = useNoteStore();
+
   return (
     <div className={cn(
       "flex justify-between sticky top-0 p-8 transition border-b z-10",
@@ -22,22 +24,10 @@ export const EditorTopBar = ({
       isScrolled && "bg-background/70 backdrop-blur-lg border-border"
     )}>
       <div className="space-y-2">
-        <header className="flex gap-2 items-center">
-          <h1 className="text-3xl font-bold">{title}</h1>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger className="p-3">
-                <PencilIcon className="text-muted-foreground" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Edit note information</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </header>
+        <EditableTitle prevTitle={note!.title ?? ""} />
         <div className="flex gap-3 items-center">
           <div className="flex gap-2">
-            {isPublic ? <>
+            {note!.isPublic ? <>
               <GlobeIcon size={20} />
               Publish
             </> : <>
