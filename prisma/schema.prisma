@@ -71,14 +71,6 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Category {
-  id       String @id @default(uuid())
-  name     String
-  iconName String
-
-  notes Note[]
-}
-
 model Collection {
   id     String @id @default(uuid())
   name   String
@@ -96,11 +88,10 @@ model Note {
   allowComment Boolean
   content      String  @db.Text
   userId       String
-  categoryId   String
+  categoryId   String?
   collectionIs String?
 
   user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  category   Category    @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   collection Collection? @relation(fields: [collectionIs], references: [id], onDelete: SetNull)
 
   comments    Comment[]
