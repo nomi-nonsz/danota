@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
+import { redirect } from 'next/navigation'
 
 import { NoteItem } from "@/components/single/note-item"
 import { NotesBar } from "@/components/single/notes-bar"
 import { ProfileBar } from "@/components/ui/profile-bar"
 import { WorkContainer } from "@/components/ui/work-container"
 
+import prisma from '@/lib/prisma'
 import { poppins } from "@/lib/fonts"
 import { getCurrentUser } from '@/lib/auth'
  
@@ -15,6 +17,18 @@ export const metadata: Metadata = {
 
 export default async function NotesPage () {
   const currentUser = await getCurrentUser();
+
+  if (!currentUser) redirect('/');
+
+  const notes = await prisma.note.findMany({
+    where: {
+      userId: currentUser.id,
+    },
+    orderBy: {
+      updatedAt: 'desc'
+    },
+    take: 10
+  })
 
   return (
     <main className="h-full flex flex-col sm:gap-2">
@@ -35,15 +49,17 @@ export default async function NotesPage () {
         </div>
         {/* suspense this */}
         <WorkContainer className="flex flex-col sm:gap-4 gap-2">
-          {Array(5).fill("").map((_, a) => 
+          {notes.map((note, a) => 
             <NoteItem
-              key={a}
-              id={a}
+              key={note.id}
+              id={note.id}
+              title={note.title}
+              content={note.content}
               icon="ChefHat"
-              commentCount={21}
-              starCount={34}
-              isPublic={false}
-              date={new Date(Date.now())}
+              commentCount={0}
+              starCount={0}
+              isPublic={note.isPublic}
+              date={note.updatedAt}
             />)}
         </WorkContainer>
       </div>
