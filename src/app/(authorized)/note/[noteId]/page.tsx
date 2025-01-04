@@ -42,6 +42,7 @@ export default async function NotePage ({
       title: true,
       content: true,
       isPublic: true,
+      shorter: true,
       createdAt: true
     },
     where: {

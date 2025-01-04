@@ -21,6 +21,7 @@ import {
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { getCategory } from "@/data/categories";
 
 interface NoteItemProps {
   id: string | number;
@@ -30,7 +31,7 @@ interface NoteItemProps {
   starCount: number;
   commentCount: number;
   date: Date;
-  icon: keyof typeof icons;
+  icon: string;
 }
 
 export const NoteItem: React.FC<NoteItemProps> = ({
@@ -43,7 +44,8 @@ export const NoteItem: React.FC<NoteItemProps> = ({
   date,
   icon
 }) => {
-  const Icon = icons[icon];
+  const category = getCategory(icon);
+  const Icon = icons[category?.icon ?? 'NotebookPen'];
   const { dispatch } = useAlert();
   const { push } = useRouter();
 
