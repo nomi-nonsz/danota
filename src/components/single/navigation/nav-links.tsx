@@ -15,6 +15,16 @@ const navigations = [
     icon: icons.Notebook,
   },
   {
+    name: "Collections",
+    path: "/collections",
+    icon: icons.SquareLibrary,
+  },
+  {
+    name: "Discover",
+    path: "/discover",
+    icon: icons.Telescope,
+  },
+  {
     name: "Settings",
     path: "/settings",
     icon: icons.Settings,
