@@ -60,11 +60,15 @@ export const useNoteStore = () => {
     setNote(res.data);
   }
 
-  const save = () => patch(`/api/notes/${note!.id}`, note, {
-    success: {
-      title: "Saved"
-    }
-  })
+  const save = async () => {
+    setStatus(CloudStatus.SAVING);
+    const res = await patch(`/api/notes/${note!.id}`, note, {
+      success: {
+        title: "Saved"
+      }
+    })
+    setStatus(CloudStatus.SAVED);
+  }
 
   return {
     note,

@@ -5,6 +5,8 @@ import { editorOptions } from "@/data/editor-options";
 import { useEditor, type Editor } from "@tiptap/react";
 import { createContext, useContext, useEffect, useState } from "react";
 import { CloudStatus, useNoteStore } from "./use-note-store";
+import { useSaveShortcut } from "./use-shortcut";
+
 import { useDebouncedCallback } from "use-debounce";
 
 interface CanvasEditorStore {
@@ -29,8 +31,7 @@ export const CanvasEditorProvider = ({
   const [isEditorLoaded, setLoaded] = useState<boolean>(false);
 
   const onSave = useDebouncedCallback(() => {
-    noteStore.setStatus(CloudStatus.SAVING);
-    noteStore.save().then(() => noteStore.setStatus(CloudStatus.SAVED));
+    noteStore.save();
   }, 1000);
 
   const onUpdate = (editor: Editor) => {
@@ -38,6 +39,8 @@ export const CanvasEditorProvider = ({
     noteStore.setStatus(CloudStatus.NOT_SAVED);
     onSave();
   }
+
+  useSaveShortcut(noteStore.save);
 
   const editor = useEditor(editorOptions({ onUpdate, initContent: noteStore.note.content }));
 
