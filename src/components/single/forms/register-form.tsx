@@ -33,10 +33,6 @@ export const RegisterForm = ({ csrfToken }: { csrfToken: string }) => {
  
   function onSubmit(values: z.infer<typeof signupSchema>) {
     post("/api/user", values, {
-      success: {
-        title: "Account creation success!",
-        description: <><Link  href="/login">Login</Link> to continue the app</>,
-      },
       redirect: () => `/login`,
     });
   }

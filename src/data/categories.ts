@@ -63,3 +63,5 @@ export const categories: CategoriesType[] = [
     icon: "NotebookPen"
   },
 ]
+
+export const getCategory = (name: string) => categories.find(category => name === category.name);

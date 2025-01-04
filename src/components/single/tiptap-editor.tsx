@@ -7,7 +7,7 @@ import { EditorContent } from "@tiptap/react";
 export const TiptapEditor = ({
   content
 }: {
-  content: string | null
+  content: string
 }) => {
   const { editor, isEditorLoaded } = useCanvasEditor();
 
@@ -21,6 +21,7 @@ export const TiptapEditor = ({
     <EditorContent
       placeholder="Type something..."
       editor={editor}
+      content={content}
       className={cn(
         "note-editor text-left text-foreground text-lg",
         "*:text-foreground",

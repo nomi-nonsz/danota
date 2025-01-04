@@ -1,16 +1,21 @@
 'use client'
 
-import { Badge } from "@/components/ui/badge";
 import { ProfileBar } from "@/components/ui/profile-bar";
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { LockIcon, PencilIcon } from "lucide-react";
+import { ClientUser } from "@/types/prisma";
+import { GlobeIcon, LockIcon, PencilIcon } from "lucide-react";
+import { EditableTitle } from "./editable-title";
+import { useNoteStore } from "@/hooks/use-note-store";
+import { CloudStatusBadge } from "../ui/cloud-status-badge";
 
 export const EditorTopBar = ({
-  isScrolled
+  isScrolled, currentUser
 } : {
-  isScrolled?: boolean
+  currentUser: ClientUser | null,
+  isScrolled?: boolean,
 }) => {
+  const { note, status } = useNoteStore();
+
   return (
     <div className={cn(
       "flex justify-between sticky top-0 p-8 transition border-b z-10",
@@ -18,28 +23,21 @@ export const EditorTopBar = ({
       isScrolled && "bg-background/70 backdrop-blur-lg border-border"
     )}>
       <div className="space-y-2">
-        <header className="flex gap-2 items-center">
-          <h1 className="text-3xl font-bold">My New note or sumthing</h1>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger className="p-3">
-                <PencilIcon className="text-muted-foreground" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Edit note information</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </header>
-        <div className="flex gap-3">
+        <EditableTitle prevTitle={note!.title ?? ""} />
+        <div className="flex gap-3 items-center">
           <div className="flex gap-2">
-            <LockIcon size={20} />
-            Private
+            {note!.isPublic ? <>
+              <GlobeIcon size={20} />
+              Publish
+            </> : <>
+              <LockIcon size={20} />
+              Private
+            </>}
           </div>
-          <Badge variant="warning">Not saved</Badge>
+          <CloudStatusBadge status={status} />
         </div>
       </div>
-      <ProfileBar />
+      <ProfileBar currentUser={currentUser} />
     </div>
   )
 }

@@ -4,9 +4,16 @@ import Link from "@tiptap/extension-link";
 import Underline from "@tiptap/extension-underline";
 import Placeholder from "@tiptap/extension-placeholder";
 
-import type { UseEditorOptions } from "@tiptap/react";
+import type { Editor, UseEditorOptions } from "@tiptap/react";
 
-export const editorOptions: UseEditorOptions = {
+export const editorOptions = ({
+  initContent,
+  onUpdate
+}: {
+  initContent?: string,
+  onUpdate: (editor: Editor) => void
+}): UseEditorOptions => ({
+  content: initContent,
   extensions: [
     StarterKit.configure({
       heading: {
@@ -28,5 +35,6 @@ export const editorOptions: UseEditorOptions = {
       }
     })
   ],
-  immediatelyRender: true
-};
+  immediatelyRender: true,
+  onUpdate: ({ editor }) => onUpdate(editor)
+});

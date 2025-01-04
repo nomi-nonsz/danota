@@ -8,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./dropdown-menu";
+import { Switch } from "./switch";
 
 export const ToolbarMenu = ({
   bottom = true,
@@ -23,21 +24,24 @@ export const ToolbarMenu = ({
           <EllipsisVertical />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-48" side={bottom ? "bottom" : "right"}>
-        <DropdownMenuItem className="[&_svg]:size-auto text-sm p-2">
-          <RefreshCwIcon size={18} />
-          Auto save
-        </DropdownMenuItem>
-        <DropdownMenuItem className="[&_svg]:size-auto text-sm p-2">
-          <Settings size={18} />
+      <DropdownMenuContent className="w-[240px]" side={bottom ? "bottom" : "right"}>
+        <label className="text-base p-3 flex justify-between items-center">
+          <div className="flex gap-2">
+            <RefreshCwIcon size={20} />
+            Auto save
+          </div>
+          <Switch />
+        </label>
+        <DropdownMenuItem className="[&_svg]:size-auto text-base p-3">
+          <Settings size={20} />
           Note Settings
         </DropdownMenuItem>
-        <DropdownMenuItem className="[&_svg]:size-auto text-sm p-2" onClick={onMoveTo}>
+        <DropdownMenuItem className="[&_svg]:size-auto text-base p-3" onClick={onMoveTo}>
           {bottom ? (<>
-            <PanelRightIcon size={18} />
+            <PanelRightIcon size={20} />
             Move to the right
           </>) : (<>
-            <PanelBottomIcon size={18} />
+            <PanelBottomIcon size={20} />
             Move to the bottom
           </>)}
         </DropdownMenuItem>

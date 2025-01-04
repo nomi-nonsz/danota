@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
 
 import { useRefreshAlert } from "@/hooks/use-refresh-alert";
+import { useAction } from "@/hooks/use-action";
+import { useNoteModal } from "@/hooks/disclosures/use-notemodal";
 
 import { ChevronsUpDown, DotIcon, icons } from "lucide-react";
 import { categories } from "@/data/categories";
@@ -39,19 +41,16 @@ import {
   CommandItem,
 } from "@/components/ui/command";
 
-const noteSchema = z.object({
-  title: z.string().min(1),
-  categoryId: z.string(),
-  isPublic: z.boolean(),
-  allowComment: z.boolean()
-})
+import { noteSchema } from "@/schemas/note-schema";
 
 export const NoteForm = () => {
+  const { post, errorMessage } = useAction();
+  const noteModal = useNoteModal();
+
   const form = useForm<z.infer<typeof noteSchema>>({
     resolver: zodResolver(noteSchema),
     defaultValues: {
       title: "",
-
       isPublic: false,
       allowComment: true
     },
@@ -60,7 +59,14 @@ export const NoteForm = () => {
   useRefreshAlert(form.formState.isDirty);
  
   function onSubmit(values: z.infer<typeof noteSchema>) {
-    console.log(values)
+    post("/api/notes", values, {
+      success: {
+        title: "Note created!",
+      },
+      redirect: (res) => `/note/${res.data.data.id}`,
+    }).then(() => {
+      noteModal.onClose();
+    });
   }
 
   return (
@@ -175,6 +181,7 @@ export const NoteForm = () => {
             </FormItem>
           )}
         />
+        <div className="text-sm text-destructive">{errorMessage}</div>
         <Button className="w-full font-bold py-4 h-fit" type="submit">Create</Button>
       </form>
     </Form>

@@ -19,19 +19,24 @@ import {
   DropdownMenuItem,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { getCategory } from "@/data/categories";
 
 interface NoteItemProps {
   id: string | number;
-  content?: React.ReactNode;
+  title: string;
+  content: string | null;
   isPublic: boolean;
   starCount: number;
   commentCount: number;
   date: Date;
-  icon: keyof typeof icons;
+  icon: string;
 }
 
 export const NoteItem: React.FC<NoteItemProps> = ({
   id,
+  title,
   content,
   isPublic,
   starCount,
@@ -39,8 +44,10 @@ export const NoteItem: React.FC<NoteItemProps> = ({
   date,
   icon
 }) => {
-  const Icon = icons[icon];
+  const category = getCategory(icon);
+  const Icon = icons[category?.icon ?? 'NotebookPen'];
   const { dispatch } = useAlert();
+  const { push } = useRouter();
 
   const onDelete = () => {
     dispatch({
@@ -49,14 +56,21 @@ export const NoteItem: React.FC<NoteItemProps> = ({
     });
   }
 
+  const onOpen = () => push(`/note/${id}`);
+
   return (
     <div className="border rounded-md bg-background">
-      <button className='p-6 text-left bg-background hover:bg-accent rounded-md'>
-        <article className="space-y-2 [&_p]:text-muted-foreground sm:[&_p]:text-base [&_p]:text-xs">
-          <h3 className="font-bold sm:text-base text-lg">How to make crispiest french fries</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.</p>
-          <p>Nullam quis imperdiet augue. Vestibulum auctor ornare leo, non suscipit....</p>
-        </article>
+      <button className='block p-6 text-left bg-background hover:bg-accent group rounded-md w-full h-44 overflow-y-clip relative' onClick={onOpen}>
+        <h3 className="font-bold text-xl mb-3">{title}</h3>
+        <article
+          className="note-content space-y-2 text-muted-foreground sm:[&_p]:text-base [&_p]:text-xs"
+          dangerouslySetInnerHTML={{ __html: content ?? "" }}
+        />
+        <div className={cn(
+          "absolute inset-0 mx-auto mt-auto w-full h-1/2",
+          "bg-gradient-to-b from-white/0 via-white via-90% to-white",
+          "group-hover:from-accent/0 group-hover:via-accent group-hover:to-accent"
+        )} />
       </button>
       <hr className="border-border" />
       <section className="p-4 flex justify-between items-center">
