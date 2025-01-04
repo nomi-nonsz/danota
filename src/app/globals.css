@@ -103,13 +103,16 @@ body {
     @apply text-sm
   }
 
-  .note-editor > .tiptap ul {
+  .note-editor > .tiptap ul,
+  article.note-content ul {
     @apply list-disc list-outside ml-4
   }
-  .note-editor > .tiptap ol {
+  .note-editor > .tiptap ol,
+  article.note-content ol {
     @apply list-decimal ml-4
   }
-  .note-editor > .tiptap li {
+  .note-editor > .tiptap li,
+  article.note-content li {
     @apply ms-3
   }
 }

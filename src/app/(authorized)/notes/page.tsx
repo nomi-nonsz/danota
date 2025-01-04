@@ -54,7 +54,7 @@ export default async function NotesPage () {
               key={note.id}
               id={note.id}
               title={note.title}
-              content={note.content}
+              content={note.shorter}
               icon="ChefHat"
               commentCount={0}
               starCount={0}

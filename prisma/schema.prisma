@@ -84,9 +84,10 @@ model Collection {
 model Note {
   id           String  @id @default(uuid())
   title        String
-  isPublic     Boolean
-  allowComment Boolean
+  isPublic     Boolean @default(false)
+  allowComment Boolean @default(false)
   content      String  @db.Text
+  shorter      String? @db.VarChar(384)
   userId       String
   categoryId   String?
   collectionIs String?

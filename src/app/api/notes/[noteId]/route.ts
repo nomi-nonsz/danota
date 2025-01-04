@@ -1,8 +1,13 @@
 import { NextResponse } from "next/server";
+
 import prisma from "@/lib/prisma";
 import { authMiddleware } from "@/lib/api-middleware";
 import { ClientUser } from "@/types/prisma";
+
+import { JSDOM } from 'jsdom';
+import DOMPurify from 'dompurify';
 import { z } from "zod";
+import { generateShorterContent } from "@/lib/server-utils";
 
 const noteSchema = z.object({
   id: z.string(),
@@ -10,6 +15,9 @@ const noteSchema = z.object({
   isPublic: z.boolean(),
   content: z.string()
 });
+
+const { window } = new JSDOM("");
+const purify = DOMPurify(window);
 
 export const PATCH = authMiddleware(
   async (req, {
@@ -36,6 +44,8 @@ export const PATCH = authMiddleware(
     }
 
     const { title, content, isPublic } = body as typeof noteSchema._type;
+    const sanitizedContent = purify.sanitize(content);
+    const shorter = generateShorterContent(sanitizedContent, 300);
 
     const note = await prisma.note.update({
       where: {
@@ -43,7 +53,10 @@ export const PATCH = authMiddleware(
         userId: currentUser.id
       },
       data: {
-        title, content, isPublic
+        title,
+        content: sanitizedContent,
+        shorter,
+        isPublic
       }
     });
 

@@ -33,7 +33,6 @@
     "@tiptap/pm": "^2.9.1",
     "@tiptap/react": "^2.9.1",
     "@tiptap/starter-kit": "^2.9.1",
-    "@types/bcryptjs": "^2.4.6",
     "axios": "^1.7.9",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
@@ -41,6 +40,8 @@
     "cmdk": "1.0.0",
     "csrf": "^3.1.0",
     "date-fns": "^4.1.0",
+    "dompurify": "^3.2.3",
+    "jsdom": "^25.0.1",
     "lucide-react": "^0.453.0",
     "next": "14.2.15",
     "next-auth": "^5.0.0-beta.25",
@@ -57,6 +58,8 @@
     "zustand": "^5.0.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsdom": "^21.1.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

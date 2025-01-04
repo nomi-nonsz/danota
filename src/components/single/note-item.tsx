@@ -20,11 +20,12 @@ import {
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 interface NoteItemProps {
   id: string | number;
   title: string;
-  content: string;
+  content: string | null;
   isPublic: boolean;
   starCount: number;
   commentCount: number;
@@ -57,12 +58,17 @@ export const NoteItem: React.FC<NoteItemProps> = ({
 
   return (
     <div className="border rounded-md bg-background">
-      <button className='p-6 text-left bg-background hover:bg-accent rounded-md w-full' onClick={onOpen}>
+      <button className='block p-6 text-left bg-background hover:bg-accent group rounded-md w-full h-44 overflow-y-clip relative' onClick={onOpen}>
         <h3 className="font-bold text-xl mb-3">{title}</h3>
         <article
-          className="space-y-2 text-muted-foreground sm:[&_p]:text-base [&_p]:text-xs"
-          dangerouslySetInnerHTML={{ __html: content }}
+          className="note-content space-y-2 text-muted-foreground sm:[&_p]:text-base [&_p]:text-xs"
+          dangerouslySetInnerHTML={{ __html: content ?? "" }}
         />
+        <div className={cn(
+          "absolute inset-0 mx-auto mt-auto w-full h-1/2",
+          "bg-gradient-to-b from-white/0 via-white via-90% to-white",
+          "group-hover:from-accent/0 group-hover:via-accent group-hover:to-accent"
+        )} />
       </button>
       <hr className="border-border" />
       <section className="p-4 flex justify-between items-center">
