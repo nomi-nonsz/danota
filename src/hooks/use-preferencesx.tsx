@@ -1,16 +1,17 @@
 'use client'
 
-import { Position, Setting } from "@prisma/client";
 import { useEffect } from "react";
 import { create } from "zustand";
+import { Position, Setting } from "@prisma/client";
+import { EditablePreferences } from "@/types/prisma";
 import { useAction } from "./use-action";
-import { BooleanProperties } from "@/types/utils";
+import { useDebouncedCallback } from "use-debounce";
 
-type EditablePreferences = Omit<Setting, 'userId' | 'id'>;
 type TogglePreferences = Pick<EditablePreferences, 'autoSave' | 'darkMode'>;
 
 interface PreferencesStore extends Omit<Setting, 'userId'> {
   isInitialized: boolean;
+  setInitialized: () => void;
   setPreference: (preference: Setting) => void;
   setz: (key: keyof EditablePreferences, value: any) => void;
   toggle: (key: keyof TogglePreferences) => void;
@@ -22,6 +23,7 @@ const usePreferencesStore = create<PreferencesStore>((set) => ({
   autoSave: true,
   darkMode: false,
   toolbarPosition: Position.BOTTOM,
+  setInitialized: () => set({ isInitialized: true }),
   setPreference: (preference) => set({
     id: preference.id,
     autoSave: preference.autoSave,
@@ -36,11 +38,11 @@ export const usePreferences = () => {
   const preferencesStore = usePreferencesStore();
   const action = useAction();
 
-  const save = () => action.patch(`/settings/${preferencesStore.id}`, {
+  const save = useDebouncedCallback(() => action.patch(`/api/settings/${preferencesStore.id}`, {
     autoSave: preferencesStore.autoSave,
     darkMode: preferencesStore.darkMode,
     toolbarPosition: preferencesStore.toolbarPosition,
-  });
+  }), 1000);
 
   const set = (key: keyof EditablePreferences, value: any) => {
     preferencesStore.setz(key, value);
@@ -62,11 +64,14 @@ export const usePreferences = () => {
 }
 
 export const PreferencesProvider = ({ initValue }: { initValue: Setting | null }) => {
-  const { setPreference, isInitialized } = usePreferences();
+  const { setPreference, isInitialized, setInitialized } = usePreferences();
 
   useEffect(() => {
     return () => {
-      if (!isInitialized && initValue) setPreference(initValue);
+      if (!isInitialized && initValue) {
+        setPreference(initValue);
+        setInitialized();
+      }
     }
   }, []);
 
