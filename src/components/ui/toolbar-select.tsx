@@ -8,6 +8,7 @@ import { IToolbar, ToolbarButton } from "./toolbar-button";
 import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { ChevronDownIcon, ChevronLeftIcon } from "lucide-react";
+import { usePreferences } from "@/hooks/use-preferencesx";
 
 export const ToolbarSelect = ({
   editor,
@@ -22,6 +23,7 @@ export const ToolbarSelect = ({
 }) => {
   defaultv = defaultv ?? data[0].name;
   const [show, setShow] = useState<boolean>(false);
+  const pref = usePreferences();
 
   const [selected, setSelected] = useState<string>(defaultv);
 

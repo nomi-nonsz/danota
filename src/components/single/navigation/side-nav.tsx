@@ -10,10 +10,12 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { useEffect, useState } from "react"
 import { useResponsive } from "@/hooks/use-responsive"
 import { signOut } from "next-auth/react"
+import { usePreferences } from "@/hooks/use-preferencesx"
 
 export const SideNav = () => {
   const { isTablet } = useResponsive();
   const [expanded, setExpanded] = useState<boolean>(true);
+  const preference = usePreferences();
 
   const toggleExpand = () => setExpanded(val => !val);
 
@@ -22,6 +24,10 @@ export const SideNav = () => {
       redirect: true,
       redirectTo: '/'
     })
+  }
+
+  const toggleDarkMode = () => {
+    preference.toggle('darkMode');
   }
 
   useEffect(() => {
@@ -73,7 +79,7 @@ export const SideNav = () => {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant={'ghost'}>
+              <Button variant={'ghost'} onClick={toggleDarkMode}>
                 <MoonIcon size={28} />
               </Button>
             </TooltipTrigger>
