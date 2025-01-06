@@ -8,6 +8,7 @@ import { CloudStatus, useNoteStore } from "./use-note-store";
 import { useSaveShortcut } from "./use-shortcut";
 
 import { useDebouncedCallback } from "use-debounce";
+import { usePreferences } from "./use-preferencesx";
 
 interface CanvasEditorStore {
   editor: Editor | null;
@@ -28,6 +29,7 @@ export const CanvasEditorProvider = ({
   children: React.ReactNode
 }) => {
   const noteStore = useNoteStore();
+  const { autoSave } = usePreferences();
   const [isEditorLoaded, setLoaded] = useState<boolean>(false);
 
   const onSave = useDebouncedCallback(() => {
@@ -37,7 +39,7 @@ export const CanvasEditorProvider = ({
   const onUpdate = (editor: Editor) => {
     noteStore.set('content', editor.getHTML());
     noteStore.setStatus(CloudStatus.NOT_SAVED);
-    onSave();
+    if (autoSave) onSave();
   }
 
   useSaveShortcut(noteStore.save);

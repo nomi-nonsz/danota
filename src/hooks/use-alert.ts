@@ -34,7 +34,6 @@ export const useAlert = create<AlertStore>((set) => ({
     isOpen: true
   }),
   onClose: () => set({
-    payload: _DEFAULT_PAYLOAD,
     isOpen: false
   }),
   onToggle: () => set(({ isOpen, payload }) => ({

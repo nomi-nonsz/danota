@@ -1,7 +1,6 @@
 'use client'
 
-import { useRef, useState } from "react"
-import { useToolbarPosition } from "@/hooks/use-toolbar";
+import { useState } from "react"
 import { cn } from "@/lib/utils";
 
 import { ClientUser, NoteClient as NoteClientType } from "@/types/prisma";
@@ -10,6 +9,8 @@ import { NoteCanvas } from "@/components/ui/note-canvas";
 import { Toolbar } from "@/components/ui/toolbar";
 import dynamic from "next/dynamic";
 import { NoteProvider } from "@/hooks/use-note-store";
+import { usePreferences } from "@/hooks/use-preferencesx";
+import { Position } from "@prisma/client";
 
 const CanvasEditorProvider = dynamic(() => import('@/hooks/use-canvas-editor').then(c => c.CanvasEditorProvider), { ssr: false });
 
@@ -20,7 +21,7 @@ export const NoteClient = ({
   currentUser: ClientUser | null,
   note: NoteClientType
 }) => {
-  const toolbarPos = useToolbarPosition();
+  const preference = usePreferences();
 
   const [scroll, setScroll] = useState<number>(0);
 
@@ -42,7 +43,7 @@ export const NoteClient = ({
           </div>
           <div className={cn(
             "w-fit h-fit",
-            toolbarPos.position === 'bottom' ? "sticky inset-0 mx-auto bottom-8" : "absolute h-fit inset-0 my-auto ms-auto right-8"
+            preference.toolbarPosition === Position.BOTTOM ? "sticky inset-0 mx-auto bottom-8" : "absolute h-fit inset-0 my-auto ms-auto right-8"
           )}>
             <Toolbar />
           </div>
