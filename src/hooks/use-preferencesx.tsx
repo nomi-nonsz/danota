@@ -7,7 +7,7 @@ import { EditablePreferences } from "@/types/prisma";
 import { useAction } from "./use-action";
 import { useDebouncedCallback } from "use-debounce";
 
-type TogglePreferences = Pick<EditablePreferences, 'autoSave' | 'darkMode'>;
+type TogglePreferences = Pick<EditablePreferences, 'autoSave' | 'darkMode' | 'expandSidebar'>;
 
 interface PreferencesStore extends Omit<Setting, 'userId'> {
   isInitialized: boolean;
@@ -22,6 +22,7 @@ const usePreferencesStore = create<PreferencesStore>((set) => ({
   id: "",
   autoSave: true,
   darkMode: false,
+  expandSidebar: true,
   toolbarPosition: Position.BOTTOM,
   setInitialized: () => set({ isInitialized: true }),
   setPreference: (preference) => set({

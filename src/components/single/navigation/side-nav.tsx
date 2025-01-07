@@ -12,12 +12,16 @@ import { useResponsive } from "@/hooks/use-responsive"
 import { signOut } from "next-auth/react"
 import { usePreferences } from "@/hooks/use-preferencesx"
 
-export const SideNav = () => {
+export const SideNav = ({
+  expand
+}: {
+  expand: boolean
+}) => {
   const { isTablet } = useResponsive();
-  const [expanded, setExpanded] = useState<boolean>(true);
-  const preference = usePreferences();
+  const { expandSidebar, toggle, set } = usePreferences();
+  const [expanded, setExpanded] = useState<boolean>(expand);
 
-  const toggleExpand = () => setExpanded(val => !val);
+  const toggleExpand = () => setExpanded(v => !v);
 
   const handleLogout = () => {
     signOut({
@@ -27,12 +31,12 @@ export const SideNav = () => {
   }
 
   const toggleDarkMode = () => {
-    preference.toggle('darkMode');
+    toggle('darkMode');
   }
 
   useEffect(() => {
-    setExpanded(!isTablet);
-  }, [isTablet])
+    set('expandSidebar', isTablet ? !expandSidebar : (expandSidebar ?? false));
+  }, [expanded])
 
   return (
     <div className={cn(

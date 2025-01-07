@@ -39,6 +39,7 @@ model Setting {
   id              String   @id @default(cuid())
   darkMode        Boolean? @default(false)
   autoSave        Boolean? @default(true)
+  expandSidebar   Boolean? @default(true)
   toolbarPosition Position
   userId          String
 

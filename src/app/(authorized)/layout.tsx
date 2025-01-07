@@ -32,7 +32,7 @@ export default async function AdminLayout({
     <>
       <main className="flex sm:flex-row flex-col h-screen">
         <div className="flex-none sm:block hidden">
-          <SideNav />
+          <SideNav expand={preference?.expandSidebar ?? false} />
         </div>
         <div className="relative flex-grow bg-background-2 sm:overflow-y-auto overflow-y-scroll">
           {children}
