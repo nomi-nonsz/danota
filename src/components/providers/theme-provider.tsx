@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { ThemeProvider as NextThemesProvider } from "next-themes"
-import { usePreferences } from "@/hooks/use-preferencesx"
 
 export function ThemeProvider({
   defaultTheme,
@@ -11,13 +10,9 @@ export function ThemeProvider({
   disableTransitionOnChange = true,
   ...props
 }: React.ComponentProps<typeof NextThemesProvider>) {
-  const preferences = usePreferences();
-  const theme = preferences.darkMode ? 'dark' : 'light';
-
   return <NextThemesProvider
     attribute={attribute}
-    defaultTheme={defaultTheme}
-    forcedTheme={preferences.isInitialized ? theme : defaultTheme}
+    defaultTheme={'system'}
     enableSystem={enableSystem}
     disableTransitionOnChange={disableTransitionOnChange}
     {...props}

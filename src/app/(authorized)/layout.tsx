@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 import prisma from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
-import { PreferencesProvider } from "@/hooks/use-preferencesx";
+import { ClientPreferenceProvider, PreferencesProvider } from "@/hooks/use-preferencesx";
 
 import { SideNav } from "@/components/single/navigation/side-nav";
 import { NoteModal } from "@/components/single/modal/note-modal";
@@ -30,13 +30,15 @@ export default async function AdminLayout({
 
   return (
     <>
-      <main className="flex sm:flex-row flex-col h-screen">
-        <div className="flex-none sm:block hidden">
-          <SideNav expand={preference?.expandSidebar ?? false} />
-        </div>
-        <div className="relative flex-grow bg-background-2 sm:overflow-y-auto overflow-y-scroll">
-          {children}
-        </div>
+      <main className="flex sm:flex-row flex-col h-screen bg-accent">
+        <ClientPreferenceProvider>
+          <div className="flex-none sm:block hidden">
+            <SideNav />
+          </div>
+          <div className="relative flex-grow bg-background-2 sm:overflow-y-auto overflow-y-scroll">
+            {children}
+          </div>
+        </ClientPreferenceProvider>
         <div className="sm:hidden block sticky bottom-0">
           <BottomNav />
         </div>
