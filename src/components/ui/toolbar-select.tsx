@@ -23,7 +23,6 @@ export const ToolbarSelect = ({
 }) => {
   defaultv = defaultv ?? data[0].name;
   const [show, setShow] = useState<boolean>(false);
-  const pref = usePreferences();
 
   const [selected, setSelected] = useState<string>(defaultv);
 
@@ -63,7 +62,7 @@ export const ToolbarSelect = ({
       </div>
       <PopoverContent
         className={cn(
-          "flex bg-white w-fit p-1 rounded-lg border shadow-md",
+          "flex bg-background w-fit p-1 rounded-lg border shadow-md",
           isDirectionVertical ? "flex-row right-14 top-0" : "flex-col bottom-14"
         )}
         side={isDirectionVertical ? "right" : "bottom"}

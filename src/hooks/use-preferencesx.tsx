@@ -7,7 +7,7 @@ import { EditablePreferences, Preferences } from "@/types/prisma";
 import { useAction } from "./use-action";
 import { useDebouncedCallback } from "use-debounce";
 
-type TogglePreferences = Pick<EditablePreferences, 'expandSidebar'>;
+type TogglePreferences = Pick<EditablePreferences, 'expandSidebar' | 'autoSave'>;
 
 interface PreferencesStore extends Omit<Preferences, 'userId'> {
   isInitialized: boolean;
