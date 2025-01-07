@@ -16,7 +16,7 @@ export const PATCH = authMiddleware(
     currentUser: ClientUser
   }) => {
     const body = await req.json();
-    const { autoSave, toolbarPosition, expandSidebar } = body as EditablePreferences;
+    const { autoSave, toolbarPosition } = body as EditablePreferences;
 
     try {
       const setting = await prisma.setting.update({
@@ -24,7 +24,7 @@ export const PATCH = authMiddleware(
           id,
           userId: currentUser.id
         },
-        data: { autoSave, toolbarPosition, expandSidebar }
+        data: { autoSave, toolbarPosition }
       });
 
       return NextResponse.json({

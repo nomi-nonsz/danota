@@ -3,13 +3,13 @@
 import { useEffect } from "react";
 import { create } from "zustand";
 import { Position, Setting } from "@prisma/client";
-import { EditablePreferences } from "@/types/prisma";
+import { EditablePreferences, Preferences } from "@/types/prisma";
 import { useAction } from "./use-action";
 import { useDebouncedCallback } from "use-debounce";
 
-type TogglePreferences = Pick<EditablePreferences, 'autoSave' | 'darkMode' | 'expandSidebar'>;
+type TogglePreferences = Pick<EditablePreferences, 'expandSidebar'>;
 
-interface PreferencesStore extends Omit<Setting, 'userId'> {
+interface PreferencesStore extends Omit<Preferences, 'userId'> {
   isInitialized: boolean;
   isInitializedClient: boolean;
   setInitialized: () => void;
@@ -24,7 +24,6 @@ const usePreferencesStore = create<PreferencesStore>((set) => ({
   isInitializedClient: false,
   id: "",
   autoSave: true,
-  darkMode: null,
   expandSidebar: true,
   toolbarPosition: Position.BOTTOM,
   setInitialized: () => set({ isInitialized: true }),
@@ -32,7 +31,6 @@ const usePreferencesStore = create<PreferencesStore>((set) => ({
   setPreference: (preference) => set({
     id: preference.id,
     autoSave: preference.autoSave,
-    darkMode: preference.darkMode,
     toolbarPosition: preference.toolbarPosition
   }),
   setz: (key, value) => set({ [key]: value }),
