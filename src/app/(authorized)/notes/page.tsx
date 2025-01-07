@@ -10,6 +10,7 @@ import { WorkContainer } from "@/components/ui/work-container"
 import prisma from '@/lib/prisma'
 import { poppins } from "@/lib/fonts"
 import { getCurrentUser } from '@/lib/auth'
+import { NotesClientEmptyLabel } from './client'
  
 export const metadata: Metadata = {
   title: 'Your Notes',
@@ -50,18 +51,22 @@ export default async function NotesPage () {
         </div>
         <Suspense>
           <WorkContainer className="flex flex-col sm:gap-4 gap-2">
-            {notes.map((note, a) => 
-              <NoteItem
-                key={note.id}
-                id={note.id}
-                title={note.title}
-                content={note.shorter}
-                icon={note.categoryId ?? ''}
-                commentCount={0}
-                starCount={0}
-                isPublic={note.isPublic}
-                date={note.updatedAt}
-              />)}
+            {notes.length > 0 ?
+              notes.map((note) => 
+                <NoteItem
+                  key={note.id}
+                  id={note.id}
+                  title={note.title}
+                  content={note.shorter}
+                  icon={note.categoryId ?? ''}
+                  commentCount={0}
+                  starCount={0}
+                  isPublic={note.isPublic}
+                  date={note.updatedAt}
+                />) : (
+                  <NotesClientEmptyLabel />
+                )
+            }
           </WorkContainer>
         </Suspense>
       </div>

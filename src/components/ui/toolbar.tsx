@@ -17,17 +17,23 @@ import { UnderlineToolbar } from "./toolbars/underline";
 import { ItalicToolbar } from "./toolbars/italic";
 import { LinkToolbar } from "./toolbars/link";
 import { BulletListToolbar, OrderedListToolbar } from "./toolbars/list";
-import { useNoteStore } from "@/hooks/use-note-store";
+import { CloudStatus, useNoteStore } from "@/hooks/use-note-store";
+import { usePreferences } from "@/hooks/use-preferencesx";
+import { Position } from "@prisma/client";
 
 export const Toolbar = () => {
   const { editor } = useCanvasEditor();
   const noteStore = useNoteStore();
-  const toolbarPos = useToolbarPosition();
+  const preference = usePreferences();
 
-  const isToolbarBottom = toolbarPos.position === 'bottom';
+  const isToolbarBottom = preference.toolbarPosition === Position.BOTTOM;
   const toolbarDirection = isToolbarBottom ? "flex-row" : "flex-col";
 
-  if (!editor) {
+  const toggleLB = () => {
+    preference.set('toolbarPosition', preference.toolbarPosition === Position.BOTTOM ? Position.LEFT : Position.BOTTOM);
+  }
+
+  if (!editor || !preference.isInitialized) {
     return null;
   }
 
@@ -46,18 +52,19 @@ export const Toolbar = () => {
         <LinkToolbar editor={editor} />
       </section>
       <SeparatorLite
-        orientation={isToolbarBottom ? "vertical": "horizontal"}
+        orientation={isToolbarBottom ? "vertical" : "horizontal"}
         className={isToolbarBottom ? "h-16": "w-16"}
       />
       <section className={cn("p-2 flex gap-2", toolbarDirection)}>
         <ToolbarMenu
           bottom={isToolbarBottom}
-          onMoveTo={toolbarPos.toggleLB}
+          onMoveTo={toggleLB}
         />
         <Button
           variant={"default"}
           className={cn("flex font-bold h-12", toolbarDirection)}
           onClick={noteStore.save}
+          disabled={(preference.autoSave ?? false) || (noteStore.status === CloudStatus.SAVED || noteStore.status === CloudStatus.SAVING)}
         >
           <SaveIcon />
           {isToolbarBottom && "Save"}

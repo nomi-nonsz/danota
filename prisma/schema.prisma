@@ -7,6 +7,13 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum Position {
+  TOP
+  BOTTOM
+  LEFT
+  RIGHT
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -18,6 +25,7 @@ model User {
 
   accounts    Account[]
   sessions    Session[]
+  setting     Setting?
   collections Collection[]
   notes       Note[]
   comments    Comment[]
@@ -25,6 +33,20 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Setting {
+  id              String   @id @default(cuid())
+  darkMode        Boolean? @default(false)
+  autoSave        Boolean? @default(true)
+  expandSidebar   Boolean? @default(true)
+  toolbarPosition Position
+  userId          String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId])
+  @@index([userId])
 }
 
 model Account {
@@ -79,6 +101,8 @@ model Collection {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   notes Note[]
+
+  @@index([userId])
 }
 
 model Note {
@@ -90,16 +114,18 @@ model Note {
   shorter      String? @db.VarChar(384)
   userId       String
   categoryId   String?
-  collectionIs String?
+  collectionId String?
 
   user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  collection Collection? @relation(fields: [collectionIs], references: [id], onDelete: SetNull)
+  collection Collection? @relation(fields: [collectionId], references: [id], onDelete: SetNull)
 
   comments    Comment[]
   staredNotes StaredNote[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userId, collectionId])
 }
 
 model Comment {
@@ -113,6 +139,8 @@ model Comment {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userId, noteId])
 }
 
 model StaredNote {

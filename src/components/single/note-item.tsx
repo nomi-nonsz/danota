@@ -60,7 +60,7 @@ export const NoteItem: React.FC<NoteItemProps> = ({
 
   return (
     <div className="border rounded-md bg-background">
-      <button className='block p-6 text-left bg-background hover:bg-accent group rounded-md w-full h-44 overflow-y-clip relative' onClick={onOpen}>
+      <button className='flex flex-col p-6 text-left bg-background hover:bg-accent group rounded-md w-full h-44 overflow-y-clip relative' onClick={onOpen}>
         <h3 className="font-bold text-xl mb-3">{title}</h3>
         <article
           className="note-content space-y-2 text-muted-foreground sm:[&_p]:text-base [&_p]:text-xs"

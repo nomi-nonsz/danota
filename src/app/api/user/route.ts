@@ -6,6 +6,7 @@ import { verifyCsrf } from "@/lib/csrf";
 import { signupSchema } from "@/schemas/auth-schema";
 
 import bcrypt from "bcryptjs";
+import { Position } from "@prisma/client";
 
 export async function POST (req: NextRequest) {
   const currentUser = await getCurrentUser();
@@ -63,6 +64,13 @@ export async function POST (req: NextRequest) {
       email,
       image,
       hash,
+      setting: {
+        create: {
+          toolbarPosition: Position.BOTTOM,
+          autoSave: true,
+          darkMode: false
+        }
+      }
     }
   })
 

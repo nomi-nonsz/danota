@@ -9,14 +9,19 @@ import {
   DropdownMenuTrigger,
 } from "./dropdown-menu";
 import { Switch } from "./switch";
+import { usePreferences } from "@/hooks/use-preferencesx";
 
 export const ToolbarMenu = ({
   bottom = true,
   onMoveTo
 }: {
-  bottom?: boolean
-  onMoveTo?: () => void
+  bottom?: boolean,
+  onMoveTo?: () => void,
 }) => {
+  const preferences = usePreferences();
+
+  const toggleAutoSave = () => preferences.toggle("autoSave");
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -30,7 +35,7 @@ export const ToolbarMenu = ({
             <RefreshCwIcon size={20} />
             Auto save
           </div>
-          <Switch />
+          <Switch checked={preferences.autoSave ?? false} onClick={toggleAutoSave} />
         </label>
         <DropdownMenuItem className="[&_svg]:size-auto text-base p-3">
           <Settings size={20} />

@@ -7,15 +7,18 @@ import { NavLinks } from "./nav-links"
 import { Button } from "@/components/ui/button"
 import { ChevronsLeftIcon, LogOutIcon, MoonIcon } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { useEffect, useState } from "react"
 import { useResponsive } from "@/hooks/use-responsive"
 import { signOut } from "next-auth/react"
+import { usePreferences } from "@/hooks/use-preferencesx"
+import { useTheme } from "next-themes"
 
 export const SideNav = () => {
+  const { setTheme } = useTheme();
   const { isTablet } = useResponsive();
-  const [expanded, setExpanded] = useState<boolean>(true);
+  const { expandSidebar, toggle } = usePreferences();
 
-  const toggleExpand = () => setExpanded(val => !val);
+  const toggleExpand = () => toggle('expandSidebar');
+  const toggleDarkMode = () => setTheme(v => v === 'dark' ? 'light' : 'dark');
 
   const handleLogout = () => {
     signOut({
@@ -24,20 +27,16 @@ export const SideNav = () => {
     })
   }
 
-  useEffect(() => {
-    setExpanded(!isTablet);
-  }, [isTablet])
-
   return (
     <div className={cn(
-      "border-r border-border p-4 h-full flex flex-col justify-between relative transition-[width]",
-      expanded ? "w-[280px]" : "w-[90px]"
+      "border-r border-border p-4 h-full flex flex-col justify-between relative transition-[width] bg-background",
+      expandSidebar ? "w-[280px]" : "w-[90px]"
     )}>
       <Button
         variant={"outline-2"}
         className={cn(
           "absolute w-9 h-9 -right-4 z-20",
-          expanded ? "rotate-0" : "rotate-180"
+          expandSidebar ? "rotate-0" : "rotate-180"
         )}
         onClick={toggleExpand}
       >
@@ -46,17 +45,17 @@ export const SideNav = () => {
       <div className="">
         <div className={cn(
           "flex justify-center items-center transition-[height,transform,margin]",
-          expanded ? "h-32 mb-0 rotate-0 scale-1" : "h-40 mb-5 -rotate-90 scale-75"
+          expandSidebar ? "h-32 mb-0 rotate-0 scale-1" : "h-40 mb-5 -rotate-90 scale-75"
         )}>
           <LogoTypography />
         </div>
         <div className="space-y-2">
-          <NavLinks shrink={!expanded} />
+          <NavLinks shrink={!expandSidebar} />
         </div>
       </div>
       <div className={cn(
         "flex gap-1 text-muted-foreground",
-        expanded ? "flex-row" : "flex-col-reverse"
+        expandSidebar ? "flex-row" : "flex-col-reverse"
       )}>
         <TooltipProvider>
           <Tooltip>
@@ -73,7 +72,7 @@ export const SideNav = () => {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant={'ghost'}>
+              <Button variant={'ghost'} onClick={toggleDarkMode}>
                 <MoonIcon size={28} />
               </Button>
             </TooltipTrigger>
