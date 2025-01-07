@@ -68,7 +68,7 @@ export const NoteItem: React.FC<NoteItemProps> = ({
         />
         <div className={cn(
           "absolute inset-0 mx-auto mt-auto w-full h-1/2",
-          "bg-gradient-to-b from-white/0 via-white via-90% to-white",
+          "bg-gradient-to-b from-background/0 via-background via-90% to-background",
           "group-hover:from-accent/0 group-hover:via-accent group-hover:to-accent"
         )} />
       </button>

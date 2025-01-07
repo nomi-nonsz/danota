@@ -10,7 +10,7 @@ export const NoteCanvas = () => {
   const { note } = useNoteStore();
 
   return (
-    <WorkContainer className="h-fit transition-[height] bg-white mx-auto border rounded-2xl">
+    <WorkContainer className="h-fit transition-[height] mx-auto">
       <TiptapEditor content={note!.content} />
     </WorkContainer>
   )
