@@ -49,7 +49,7 @@ export const NoteItem: React.FC<NoteItemProps> = ({
   const action = useAction();
   const Icon = icons[category?.icon ?? 'NotebookPen'];
   const { dispatch } = useAlert();
-  const { push } = useRouter();
+  const router = useRouter();
 
   const onDelete = () => {
     dispatch({
@@ -58,11 +58,13 @@ export const NoteItem: React.FC<NoteItemProps> = ({
         success: {
           title: "Note deleted"
         }
+      }).then(() => {
+        router.refresh();
       })
     });
   }
 
-  const onOpen = () => push(`/note/${id}`);
+  const onOpen = () => router.push(`/note/${id}`);
 
   return (
     <div className="border rounded-md bg-background">

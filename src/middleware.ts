@@ -30,8 +30,8 @@ export function middleware(req: NextRequest) {
   return res;
 }
 
-const paths = [ ...NOCACHE_PATHS ];
-
 export const config = {
-  matcher: paths,
+  matcher: [
+    '/notes'
+  ],
 };
