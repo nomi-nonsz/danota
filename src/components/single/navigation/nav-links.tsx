@@ -65,7 +65,7 @@ export const NavLinks = ({
             variant={'ghost'}
             className={cn(
               "w-full justify-start gap-3 px-[18px] py-4 h-fit rounded-xl font-bold overflow-hidden [&_svg]:size-6",
-              currentTab !== tab && "text-muted-foreground"
+              currentTab !== tab && "text-muted-foreground dark:text-white/60"
             )}
           >
             <LucideIcon size={40} className="" />
