@@ -22,6 +22,7 @@ import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { getCategory } from "@/data/categories";
+import { useAction } from "@/hooks/use-action";
 
 interface NoteItemProps {
   id: string | number;
@@ -45,6 +46,7 @@ export const NoteItem: React.FC<NoteItemProps> = ({
   icon
 }) => {
   const category = getCategory(icon);
+  const action = useAction();
   const Icon = icons[category?.icon ?? 'NotebookPen'];
   const { dispatch } = useAlert();
   const { push } = useRouter();
@@ -52,7 +54,11 @@ export const NoteItem: React.FC<NoteItemProps> = ({
   const onDelete = () => {
     dispatch({
       title: "Delete this note?",
-      onConfirm: () => {}
+      onConfirm: () => action.remove(`/api/notes/${id}`, {
+        success: {
+          title: "Note deleted"
+        }
+      })
     });
   }
 
@@ -106,8 +112,8 @@ export const NoteItem: React.FC<NoteItemProps> = ({
               <EllipsisVerticalIcon />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem>
+          <DropdownMenuContent side="right" align="start">
+            <DropdownMenuItem className="pr-14">
               {isPublic ? <>
                 <LockIcon />
                 Unpublish
@@ -121,7 +127,7 @@ export const NoteItem: React.FC<NoteItemProps> = ({
               Edit
             </DropdownMenuItem>
             <DropdownMenuItem
-              className='text-destructive focus:text-background focus:bg-destructive'
+              className='text-destructive focus:text-background dark:focus:text-foreground focus:bg-destructive'
               onClick={onDelete}
             >
               <TrashIcon />

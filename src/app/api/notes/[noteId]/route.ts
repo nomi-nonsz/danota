@@ -16,9 +16,6 @@ const noteSchema = z.object({
   content: z.string()
 });
 
-const { window } = new JSDOM("");
-const purify = DOMPurify(window);
-
 export const PATCH = authMiddleware(
   async (req, {
     params: {
@@ -43,6 +40,9 @@ export const PATCH = authMiddleware(
       })
     }
 
+    const { window } = new JSDOM("");
+    const purify = DOMPurify(window);
+
     const { title, content, isPublic } = body as typeof noteSchema._type;
     const sanitizedContent = purify.sanitize(content);
     const shorter = generateShorterContent(sanitizedContent, 300);
@@ -62,6 +62,33 @@ export const PATCH = authMiddleware(
 
     return NextResponse.json({
       message: "Note updated",
+      data: note
+    }, {
+      status: 200
+    });
+})
+
+export const DELETE = authMiddleware(
+  async (_, {
+    params: {
+      noteId
+    },
+    currentUser
+  }: {
+    params: {
+      noteId: string
+    },
+    currentUser: ClientUser
+  }) => {
+    const note = await prisma.note.delete({
+      where: {
+        id: noteId,
+        userId: currentUser.id
+      }
+    });
+
+    return NextResponse.json({
+      message: "Note deleted",
       data: note
     }, {
       status: 200
