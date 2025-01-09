@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { PlusIcon } from "lucide-react"
 import { useDebouncedCallback } from "use-debounce"
-import { useRouter, useSearchParams } from "next/navigation"
 
 import { Button } from "../ui/button"
 import { NotesFilter } from "./notes-filter"
@@ -14,9 +13,8 @@ import { useFilterByParam } from "@/hooks/use-filter-byparam"
 
 export const NotesBar = () => {
   const noteModal = useNoteModal();
-  const searchParams = useSearchParams();
 
-  const search = useFilterByParam(searchParams, 'q');
+  const search = useFilterByParam('q');
 
   const [isSearchFocused, setSearchFocused] = useState<boolean>(false);
   

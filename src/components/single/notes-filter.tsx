@@ -12,9 +12,39 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
+import { useEffect, useState } from "react"
+import { useFilterByParams } from "@/hooks/use-filter-byparam"
 
 export const NotesFilter = () => {
+  const params = useFilterByParams()
+  const [form, setForm] = useState({
+    sort: 'date',
+    order: 'desc',
+  });
+  const [isInitialized, setInitialized] = useState(false);
+
+  const set = (key: keyof typeof form, value: string) => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      [key]: value
+    }));
+  }
+
+  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => set(e.target.name as keyof typeof form, e.target.value)
+  const onChangeSwitch = (key: keyof typeof form, value: string) => set(key, value)
+
+  useEffect(() => {
+    return () => {
+      setInitialized(true);
+    }
+  }, [])
+
+  useEffect(() => {
+    if (isInitialized) params.set(form);
+  }, [form])
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -27,13 +57,18 @@ export const NotesFilter = () => {
       </PopoverTrigger>
       <PopoverContent className="p-0">
         <form onSubmit={(e) => { e.preventDefault() }}>
-          <RadioGroup className="p-4" defaultValue="date">
+          <RadioGroup
+            name="sort"
+            className="p-4"
+            defaultValue={form.sort}
+            onChange={onChangeInput}
+          >
             <label className="flex items-center gap-2">
               <RadioGroupItem value="title" />
               By title
             </label>
             <label className="flex items-center gap-2">
-              <RadioGroupItem value="date" />
+              <RadioGroupItem value="updatedAt" />
               By date
             </label>
             <label className="flex items-center gap-2">
@@ -47,7 +82,11 @@ export const NotesFilter = () => {
           </RadioGroup>
           <div className="border-b"></div>
           <div className="p-2">
-            <Select defaultValue="desc">
+            <Select
+              defaultValue={form.order}
+              name="order"
+              onValueChange={(value) => onChangeSwitch('order', value)}
+            >
               <SelectTrigger className="px-4 py-6">
                 <div className="flex gap-2 items-center">
                   <ArrowUpDownIcon className="text-muted-foreground size-4" />

@@ -22,7 +22,9 @@ export default async function NotesPage ({
 }: {
   searchParams?: {
     page?: string,
-    q?: string
+    q?: string,
+    sort?: string,
+    order?: string
   }
 }) {
   const currentUser = await getCurrentUser();
@@ -37,7 +39,7 @@ export default async function NotesPage ({
       }
     },
     orderBy: {
-      updatedAt: 'desc'
+      [searchParams?.sort ?? 'updatedAt']: searchParams?.order ?? 'desc'
     },
     take: 10
   })
