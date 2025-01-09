@@ -67,7 +67,7 @@ const NoteItemMenu = ({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent side="right" align="start">
-        <DropdownMenuItem className="pr-14">
+        <DropdownMenuItem>
           {isPublic ? <>
             <LockIcon />
             Unpublish
@@ -80,7 +80,7 @@ const NoteItemMenu = ({
           <DownloadIcon />
           Export
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem  className="pr-5">
           <SquareLibraryIcon />
           Add to Collection
         </DropdownMenuItem>
