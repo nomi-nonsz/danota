@@ -1,6 +1,6 @@
 'use client'
 
-import { EllipsisVertical, PanelBottomIcon, PanelRightIcon, RefreshCwIcon, Settings } from "lucide-react";
+import { DownloadIcon, EllipsisVertical, PanelBottomIcon, PanelRightIcon, RefreshCwIcon, Settings } from "lucide-react";
 import { Button } from "./button";
 import {
   DropdownMenu,
@@ -10,6 +10,8 @@ import {
 } from "./dropdown-menu";
 import { Switch } from "./switch";
 import { usePreferences } from "@/hooks/use-preferencesx";
+import { useDisclosure } from "@/hooks/use-diclosure";
+import { NoteSettingsModal } from "../single/modal/note-modal";
 
 export const ToolbarMenu = ({
   bottom = true,
@@ -19,18 +21,26 @@ export const ToolbarMenu = ({
   onMoveTo?: () => void,
 }) => {
   const preferences = usePreferences();
+  const noteSettings = useDisclosure();
 
   const toggleAutoSave = () => preferences.toggle("autoSave");
 
+  const onSettings = () => noteSettings.onOpen();
+
   return (
     <DropdownMenu>
+      <NoteSettingsModal
+        open={noteSettings.isOpen}
+        onClose={noteSettings.onClose}
+        onToggle={noteSettings.onToggle}
+      />
       <DropdownMenuTrigger asChild>
         <Button variant={"ghost"} className="font-bold h-12">
           <EllipsisVertical />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-[240px]" side={bottom ? "bottom" : "right"}>
-        <label className="text-sm px-3 py-2.5 flex justify-between items-center">
+      <DropdownMenuContent className="w-[240px]" side={bottom ? "top" : "right"}>
+        <label className="text-sm px-3 py-2 flex justify-between items-center">
           <div className="flex gap-2">
             <RefreshCwIcon size={20} />
             Auto save
@@ -38,6 +48,10 @@ export const ToolbarMenu = ({
           <Switch checked={preferences.autoSave ?? false} onClick={toggleAutoSave} />
         </label>
         <DropdownMenuItem className="[&_svg]:size-auto">
+          <DownloadIcon size={20} />
+          Export
+        </DropdownMenuItem>
+        <DropdownMenuItem className="[&_svg]:size-auto" onClick={onSettings}>
           <Settings size={20} />
           Note Settings
         </DropdownMenuItem>
