@@ -7,11 +7,12 @@ import { forwardRef } from "react"
 interface ISearchInput extends React.InputHTMLAttributes<HTMLDivElement> {
   field?: HTMLInputElement,
   onFocusInput?: (e: React.FocusEvent<HTMLInputElement>) => void,
-  onBlurInput?: (e: React.FocusEvent<HTMLInputElement>) => void
+  onBlurInput?: (e: React.FocusEvent<HTMLInputElement>) => void,
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export const SearchInput = forwardRef<HTMLDivElement, ISearchInput>(
-  ({ className, field, onFocusInput, onBlurInput, ...props }, ref) => {
+  ({ className, field, onFocusInput, onChange, onBlurInput, ...props }, ref) => {
     return (
       <div
         className={cn(
@@ -33,6 +34,7 @@ export const SearchInput = forwardRef<HTMLDivElement, ISearchInput>(
           )}
           onFocus={onFocusInput}
           onBlur={onBlurInput}
+          onChange={onChange}
         />
       </div>
     )
