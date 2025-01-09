@@ -17,7 +17,14 @@ export const metadata: Metadata = {
   description: 'This is where your notes saved',
 }
 
-export default async function NotesPage () {
+export default async function NotesPage ({
+  searchParams
+}: {
+  searchParams?: {
+    page?: string,
+    q?: string
+  }
+}) {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) redirect('/');
@@ -25,6 +32,9 @@ export default async function NotesPage () {
   const notes = await prisma.note.findMany({
     where: {
       userId: currentUser.id,
+      title: {
+        contains: searchParams?.q
+      }
     },
     orderBy: {
       updatedAt: 'desc'
