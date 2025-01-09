@@ -5,15 +5,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
 
-import { useRefreshAlert } from "@/hooks/use-refresh-alert";
-import { useAction } from "@/hooks/use-action";
-import { useNoteModal } from "@/hooks/disclosures/use-notemodal";
-
 import { ChevronsUpDown, DotIcon, icons } from "lucide-react";
 import { categories } from "@/data/categories";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { SwitchForm } from "@/components/ui/switch-form";
 
 import {
@@ -42,49 +37,47 @@ import {
 } from "@/components/ui/command";
 
 import { noteSchema } from "@/schemas/note-schema";
+import { useNoteStore } from "@/hooks/use-note-store";
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { useDebouncedCallback } from "use-debounce";
 
-export const NoteForm = () => {
-  const { post, errorMessage, pending } = useAction();
-  const noteModal = useNoteModal();
+export const NoteSettingsForm = ({
+  onClose
+}: {
+  onClose?: () => void
+}) => {
+  const { note, save, set } = useNoteStore();
+  const [pending, setPending] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof noteSchema>>({
     resolver: zodResolver(noteSchema),
     defaultValues: {
-      title: "",
-      isPublic: false,
-      allowComment: true
+      title: note.title,
+      isPublic: note.isPublic,
+      allowComment: note.allowComment,
+      categoryId: note.categoryId ?? ''
     },
   })
 
-  useRefreshAlert(form.formState.isDirty);
+  const onSave = useDebouncedCallback(() => save().then(() => {
+    onClose?.();
+    setPending(false);
+  }), 500);
  
   function onSubmit(values: z.infer<typeof noteSchema>) {
-    post("/api/notes", values, {
-      success: {
-        title: "Note created!",
-      },
-      redirect: (res) => `/note/${res.data.data.id}`,
-    }).then(() => {
-      noteModal.onClose();
-    });
+    setPending(true);
+
+    set('isPublic', values.isPublic);
+    set('allowComment', values.allowComment);
+    set('categoryId', values.categoryId);
+
+    onSave();
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Note title</FormLabel>
-              <FormControl>
-                <Input placeholder="School resume..." {...field} />
-              </FormControl>
-              <FormMessage className="text-xs" />
-            </FormItem>
-          )}
-        />
         <FormField
           control={form.control}
           name="categoryId"
@@ -181,13 +174,12 @@ export const NoteForm = () => {
             </FormItem>
           )}
         />
-        <div className="text-sm text-destructive">{errorMessage}</div>
         <Button
           className="w-full text-base font-bold py-4 h-fit"
           type="submit"
           isLoading={pending}
         >
-          Create
+          Save
         </Button>
       </form>
     </Form>

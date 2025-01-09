@@ -43,7 +43,9 @@ export default async function NotePage ({
       content: true,
       isPublic: true,
       shorter: true,
-      createdAt: true
+      createdAt: true,
+      categoryId: true,
+      allowComment: true
     },
     where: {
       id: params.noteId,

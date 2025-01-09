@@ -8,11 +8,10 @@ import { JSDOM } from 'jsdom';
 import DOMPurify from 'dompurify';
 import { z } from "zod";
 import { generateShorterContent } from "@/lib/server-utils";
+import { noteSchema } from "@/schemas/note-schema";
 
-const noteSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  isPublic: z.boolean(),
+const schema = z.object({
+  ...noteSchema.shape,
   content: z.string()
 });
 
@@ -30,7 +29,7 @@ export const PATCH = authMiddleware(
   }) => {
     const body = await req.json();
 
-    const validate = noteSchema.safeParse(body);
+    const validate = schema.safeParse(body);
 
     if (!validate.success) {
       return NextResponse.json({
@@ -43,7 +42,7 @@ export const PATCH = authMiddleware(
     const { window } = new JSDOM("");
     const purify = DOMPurify(window);
 
-    const { title, content, isPublic } = body as typeof noteSchema._type;
+    const { title, content, isPublic, allowComment, categoryId } = body as typeof schema._type;
     const sanitizedContent = purify.sanitize(content);
     const shorter = generateShorterContent(sanitizedContent, 300);
 
@@ -56,7 +55,9 @@ export const PATCH = authMiddleware(
         title,
         content: sanitizedContent,
         shorter,
-        isPublic
+        isPublic,
+        allowComment,
+        categoryId
       }
     });
 
