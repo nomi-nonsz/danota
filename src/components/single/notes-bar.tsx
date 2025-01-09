@@ -2,16 +2,23 @@
 
 import { useState } from "react"
 import { PlusIcon } from "lucide-react"
+import { useDebouncedCallback } from "use-debounce"
 
 import { Button } from "../ui/button"
 import { NotesFilter } from "./notes-filter"
 
 import { SearchInput } from "@/components/ui/search-input"
 import { useNoteModal } from "@/hooks/disclosures/use-notemodal"
+import { useFilterByParam } from "@/hooks/use-filter-byparam"
 
 export const NotesBar = () => {
   const noteModal = useNoteModal();
+
+  const search = useFilterByParam('q');
+
   const [isSearchFocused, setSearchFocused] = useState<boolean>(false);
+  
+  const onSearch = useDebouncedCallback(search.onChange, 500);
 
   return (
     <div className="flex gap-2">
@@ -19,6 +26,7 @@ export const NotesBar = () => {
         className="flex-grow h-12"
         onFocusInput={() => setSearchFocused(true)}
         onBlurInput={() => setSearchFocused(false)}
+        onChange={onSearch}
       />
       {!isSearchFocused && <>
         <NotesFilter />
