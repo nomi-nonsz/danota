@@ -2,12 +2,13 @@
 
 import { format } from "date-fns";
 import {
+  DownloadIcon,
   EllipsisVerticalIcon,
   GlobeIcon,
   icons,
   LockIcon,
   MessageSquareIcon,
-  PencilIcon,
+  SquareLibraryIcon,
   StarIcon,
   TrashIcon,
 } from "lucide-react";
@@ -35,21 +36,15 @@ interface NoteItemProps {
   icon: string;
 }
 
-export const NoteItem: React.FC<NoteItemProps> = ({
-  id,
-  title,
-  content,
-  isPublic,
-  starCount,
-  commentCount,
-  date,
-  icon
+const NoteItemMenu = ({
+  id, isPublic
+}: {
+  id: string | number,
+  isPublic: boolean
 }) => {
-  const category = getCategory(icon);
-  const action = useAction();
-  const Icon = icons[category?.icon ?? 'NotebookPen'];
-  const { dispatch } = useAlert();
   const router = useRouter();
+  const action = useAction();
+  const { dispatch } = useAlert();
 
   const onDelete = () => {
     dispatch({
@@ -63,6 +58,57 @@ export const NoteItem: React.FC<NoteItemProps> = ({
       })
     });
   }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant={"outline-2"} className='w-10 h-10'>
+          <EllipsisVerticalIcon />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent side="right" align="start">
+        <DropdownMenuItem className="pr-14">
+          {isPublic ? <>
+            <LockIcon />
+            Unpublish
+          </> : <>
+            <GlobeIcon />
+            Publish
+          </>}
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <DownloadIcon />
+          Export
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <SquareLibraryIcon />
+          Add to Collection
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          className='text-destructive focus:text-background dark:focus:text-foreground focus:bg-destructive'
+          onClick={onDelete}
+        >
+          <TrashIcon />
+          Delete
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
+export const NoteItem: React.FC<NoteItemProps> = ({
+  id,
+  title,
+  content,
+  isPublic,
+  starCount,
+  commentCount,
+  date,
+  icon
+}) => {
+  const category = getCategory(icon);
+  const Icon = icons[category?.icon ?? 'NotebookPen'];
+  const router = useRouter();
 
   const onOpen = () => router.push(`/note/${id}`);
 
@@ -108,35 +154,10 @@ export const NoteItem: React.FC<NoteItemProps> = ({
             {format(date, "MMM d, y")}
           </div>
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant={"outline-2"} className='w-10 h-10'>
-              <EllipsisVerticalIcon />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent side="right" align="start">
-            <DropdownMenuItem className="pr-14">
-              {isPublic ? <>
-                <LockIcon />
-                Unpublish
-              </> : <>
-                <GlobeIcon />
-                Publish
-              </>}
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <PencilIcon />
-              Edit
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className='text-destructive focus:text-background dark:focus:text-foreground focus:bg-destructive'
-              onClick={onDelete}
-            >
-              <TrashIcon />
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <NoteItemMenu
+          id={id}
+          isPublic={isPublic}
+        />
       </section>
     </div>
   )
