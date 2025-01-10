@@ -9,6 +9,7 @@ import { SideNav } from "@/components/single/navigation/side-nav";
 import { NoteModal } from "@/components/single/modal/note-modal";
 import { AlertDialog } from "@/components/single/modal/alert-dialog";
 import { BottomNav } from "@/components/single/navigation/bottom-nav";
+import { CollectionCreationModal } from "@/components/single/modal/collection-modal";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -44,6 +45,7 @@ export default async function AdminLayout({
         </div>
       </main>
       <NoteModal />
+      <CollectionCreationModal />
       <AlertDialog />
       <PreferencesProvider initValue={preference} />
     </>

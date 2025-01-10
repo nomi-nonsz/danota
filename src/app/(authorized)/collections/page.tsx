@@ -5,6 +5,8 @@ import { Suspense } from 'react'
 import { NotesBar } from "@/components/single/notes-bar"
 import { ProfileBar } from "@/components/ui/profile-bar"
 import { WorkContainer } from "@/components/ui/work-container"
+import { CollectionItem } from '@/components/single/collection-item'
+import { AddCollectionButton } from '@/components/single/buttons/add-collection-button'
 
 import prisma from '@/lib/prisma'
 import { poppins } from "@/lib/fonts"
@@ -29,15 +31,18 @@ export default async function CollectionsPage () {
         <header className="sm:my-16 my-8 text-center">
           <h1 className={`sm:text-4xl text-2xl font-bold ${poppins.className}`}>Collections</h1>
         </header>
-        <div className="sm:block hidden">
-          <NotesBar />
-        </div>
+        <AddCollectionButton />
       </WorkContainer>
       <div className="flex-grow sm:overflow-y-scroll p-4">
-        <div className="sticky top-0 py-3 bg-background-2 sm:hidden block">
-          <NotesBar />
-        </div>
-        <WorkContainer className="flex flex-col sm:gap-4 gap-2"></WorkContainer>
+        <WorkContainer className="flex flex-col sm:gap-4 gap-2">
+          {[1,2,3,4,5,6,7,8].map((_, i) => (
+            <CollectionItem
+              id={i}
+              name='mY collection'
+              description='another day another description lol'
+            />
+          ))}
+        </WorkContainer>
       </div>
     </main>
   )
