@@ -5,7 +5,7 @@ import { useCollectionModal } from "@/hooks/disclosures/use-collection-modal";
 import { CollectionCreationForm } from "../forms/collection-form";
 
 export const CollectionCreationModal = () => {
-  const { isOpen, onToggle } = useCollectionModal();
+  const { isOpen, onToggle, data } = useCollectionModal();
 
   return (
     <Dialog open={isOpen} onOpenChange={onToggle} modal>
@@ -14,7 +14,7 @@ export const CollectionCreationModal = () => {
       >
         <DialogHeader>
           <DialogTitle className="font-bold text-2xl">
-            Create a new collection
+            {data ? "Edit collection" : "Create a new collection"}
           </DialogTitle>
         </DialogHeader>
         <CollectionCreationForm />

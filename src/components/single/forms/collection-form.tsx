@@ -9,7 +9,6 @@ import { useAction } from "@/hooks/use-action";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { SwitchForm } from "@/components/ui/switch-form";
 
 import {
   Form,
@@ -25,28 +24,42 @@ import { collectionSchema } from "@/schemas/note-schema";
 import { useCollectionModal } from "@/hooks/disclosures/use-collection-modal";
 
 export const CollectionCreationForm = () => {
-  const { post, errorMessage, pending } = useAction();
+  const { post, patch, errorMessage, pending } = useAction();
   const collectionModal = useCollectionModal();
 
   const form = useForm<z.infer<typeof collectionSchema>>({
     resolver: zodResolver(collectionSchema),
     defaultValues: {
-      name: '',
-      description: ''
+      name: collectionModal.data?.name ?? '',
+      description: collectionModal.data?.description ?? ''
     },
   })
 
   useRefreshAlert(form.formState.isDirty);
  
-  function onSubmit(values: z.infer<typeof collectionSchema>) {
-    post("/api/collections", values, {
-      success: {
-        title: "New collection created!",
-      },
-      refresh: true
-    }).then(() => {
+  async function onSubmit(values: z.infer<typeof collectionSchema>) {
+    try {
+      if (!!collectionModal.data) {
+        await patch(`/api/collections/${collectionModal.data.id}`, values, {
+          success: {
+            title: "New collection created!",
+          },
+          refresh: true
+        })
+      }
+      else {
+        await post("/api/collections", values, {
+          success: {
+            title: "New collection created!",
+          },
+          refresh: true
+        })
+      }
       collectionModal.onClose();
-    });
+    }
+    catch (err) {
+      console.error(err);
+    }
   }
   
   return (
@@ -72,8 +85,9 @@ export const CollectionCreationForm = () => {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea placeholder="(Max 150 characters)" {...field} />
+                <Textarea {...field} />
               </FormControl>
+              <FormDescription>Max 150 characters</FormDescription>
               <FormMessage className="text-xs" />
             </FormItem>
           )}
@@ -84,7 +98,7 @@ export const CollectionCreationForm = () => {
           type="submit"
           isLoading={pending}
         >
-          Create
+          {collectionModal.data ? "Save" : "Create"}
         </Button>
       </form>
     </Form>
