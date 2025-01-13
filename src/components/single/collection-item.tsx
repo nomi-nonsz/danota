@@ -15,7 +15,7 @@ export const CollectionItem = ({
 }: {
   id: string | number
   name: string,
-  description: string,
+  description: string | null,
 }) => {
   const router = useRouter();
   const onOpen = () => router.push(`/collection/${id}`);
@@ -24,7 +24,7 @@ export const CollectionItem = ({
     <div className="border rounded-md bg-background flex">
       <button className="p-6 text-left hover:bg-accent group w-full overflow-y-clip relative flex-grow" onClick={onOpen}>
         <h2 className="text-lg font-bold">{name}</h2>
-        <p className="text-foreground/60">{description}</p>
+        {description && <p className="text-foreground/60">{description}</p>}
       </button>
       <div className="p-6 border-s">
         <DropdownMenu>

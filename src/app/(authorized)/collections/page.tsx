@@ -22,6 +22,11 @@ export default async function CollectionsPage () {
 
   if (!currentUser) redirect('/');
 
+  const collections = await prisma.collection.findMany({
+    where: { userId: currentUser.id },
+    take: 10
+  });
+
   return (
     <main className="h-full flex flex-col sm:gap-2">
       <WorkContainer className="sm:p-0 px-4 w-full">
@@ -35,11 +40,12 @@ export default async function CollectionsPage () {
       </WorkContainer>
       <div className="flex-grow sm:overflow-y-scroll p-4">
         <WorkContainer className="flex flex-col sm:gap-4 gap-2">
-          {[1,2,3,4,5,6,7,8].map((_, i) => (
+          {collections.map((collection) => (
             <CollectionItem
-              id={i}
-              name='mY collection'
-              description='another day another description lol'
+              key={collection.id}
+              id={collection.id}
+              name={collection.name}
+              description={collection.description}
             />
           ))}
         </WorkContainer>

@@ -6,3 +6,8 @@ export const noteSchema = z.object({
   isPublic: z.boolean(),
   allowComment: z.boolean()
 })
+
+export const collectionSchema = z.object({
+  name: z.string().min(3).max(50),
+  description: z.string().max(150)
+});

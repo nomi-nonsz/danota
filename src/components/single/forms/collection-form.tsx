@@ -3,14 +3,9 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { cn } from "@/lib/utils";
 
 import { useRefreshAlert } from "@/hooks/use-refresh-alert";
 import { useAction } from "@/hooks/use-action";
-import { useNoteModal } from "@/hooks/disclosures/use-notemodal";
-
-import { ChevronsUpDown, DotIcon, icons } from "lucide-react";
-import { categories } from "@/data/categories";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,15 +21,12 @@ import {
   FormDescription,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-
-const collectionSchema = z.object({
-  name: z.string().min(3).max(50),
-  description: z.string().max(150)
-});
+import { collectionSchema } from "@/schemas/note-schema";
+import { useCollectionModal } from "@/hooks/disclosures/use-collection-modal";
 
 export const CollectionCreationForm = () => {
   const { post, errorMessage, pending } = useAction();
-  const noteModal = useNoteModal();
+  const collectionModal = useCollectionModal();
 
   const form = useForm<z.infer<typeof collectionSchema>>({
     resolver: zodResolver(collectionSchema),
@@ -47,13 +39,13 @@ export const CollectionCreationForm = () => {
   useRefreshAlert(form.formState.isDirty);
  
   function onSubmit(values: z.infer<typeof collectionSchema>) {
-    post("/api/notes", values, {
+    post("/api/collections", values, {
       success: {
-        title: "Note created!",
+        title: "New collection created!",
       },
-      redirect: (res) => `/note/${res.data.data.id}`,
+      refresh: true
     }).then(() => {
-      noteModal.onClose();
+      collectionModal.onClose();
     });
   }
   
