@@ -9,10 +9,14 @@ export const GET = authMiddleware(
     const { searchParams } = req.nextUrl;
 
     const page = parseInt(searchParams.get('page') ?? '0');
+    const query = searchParams.get('q');
 
     const collections = await prisma.collection.findMany({
       where: {
-        userId: currentUser.id
+        userId: currentUser.id,
+        name: {
+          contains: query ?? undefined
+        }
       },
       take: 10,
       skip: page,

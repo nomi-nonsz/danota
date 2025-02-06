@@ -11,6 +11,7 @@ import { Checkbox } from "../ui/checkbox"
 import { Input } from "../ui/input"
 import { useAction } from "@/hooks/use-action"
 import { useToast } from "@/hooks/use-toast"
+import { useDebouncedCallback } from "use-debounce"
 
 type OnlyIdNote = {
   id: string
@@ -98,8 +99,12 @@ export const CollectionSaver = ({
     }
   }
 
-  const getCollections = async (page: number) => {
-    const res = await axios.get<{data: (Collection & { notes: OnlyIdNote[] | null })[]}>(`/api/collections?page=${page}`);
+  const getCollections = async (page?: number, searchQuery?: string) => {
+    const reqParams = new URLSearchParams();
+    if (page) reqParams.set('page', page.toString());
+    if (searchQuery) reqParams.set('q', searchQuery);
+
+    const res = await axios.get<{data: (Collection & { notes: OnlyIdNote[] | null })[]}>(`/api/collections?${reqParams.toString()}`);
     const { data } = res.data;
 
     setCollections(data);
@@ -114,20 +119,32 @@ export const CollectionSaver = ({
     })
   }
 
+  const searchCollection = useDebouncedCallback((query) => {
+    setCollections(v => null);
+    getCollections(0, query);
+  }, 500);
+
+  const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    searchCollection(e.target.value);
+  }
+
   useEffect(() => {
     getCollections(0);
-    
   }, []);
 
   return (
     <div className="flex flex-col gap-5 mt-3">
       <div className="">
-        <Input className="p-5" placeholder="Search collection..." />
+        <Input
+          className="p-5"
+          placeholder="Search collection..."
+          onChange={onSearch}
+        />
       </div>
       <div className="h-[360px] overflow-y-scroll flex flex-col gap-3">
         {collections ? (
           collections.map((collection) => {
-            const isChecked = !!collection.notes?.find(note => note.id === noteId);
+            const isChecked = selectedCollection.has(collection.id);
 
             return <CollectionItem
               name={collection.name}
