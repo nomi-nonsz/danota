@@ -12,7 +12,7 @@ export const AddCollectionButton = () => {
   }
 
   return (
-    <button className="rounded-md bg-primary flex justify-center items-center gap-2 p-8 text-lg w-full" onClick={onCreate}>
+    <button className="rounded-md bg-primary text-white flex justify-center items-center gap-2 p-8 text-lg w-full" onClick={onCreate}>
       <PlusIcon />
       Add new collection
     </button>
