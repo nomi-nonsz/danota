@@ -1,8 +1,36 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { authMiddleware } from "@/lib/api-middleware";
 import { collectionSchema } from "@/schemas/note-schema";
 import { ClientUser } from "@/types/prisma";
+
+export const GET = authMiddleware(
+  async (req: NextRequest, { currentUser }: { currentUser: ClientUser }) => {
+    const { searchParams } = req.nextUrl;
+
+    const page = parseInt(searchParams.get('page') ?? '0');
+
+    const collections = await prisma.collection.findMany({
+      where: {
+        userId: currentUser.id
+      },
+      take: 10,
+      skip: page,
+      include: {
+        notes: {
+          select: {
+            id: true
+          }
+        }
+      }
+    });
+
+    return NextResponse.json({
+      data: collections
+    }, {
+      status: 200
+    });
+})
 
 export const POST = authMiddleware(
   async (req, { currentUser }: { currentUser: ClientUser }) => {

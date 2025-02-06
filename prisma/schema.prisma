@@ -113,18 +113,17 @@ model Note {
   shorter      String? @db.VarChar(384)
   userId       String
   categoryId   String?
-  collectionId String?
 
   user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  collection Collection? @relation(fields: [collectionId], references: [id], onDelete: SetNull)
 
+  collections Collection[]
   comments    Comment[]
   staredNotes StaredNote[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([userId, collectionId])
+  @@index([userId])
 }
 
 model Comment {
