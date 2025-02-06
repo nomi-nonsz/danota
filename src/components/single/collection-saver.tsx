@@ -55,9 +55,11 @@ export const CollectionItem = ({
 }
 
 export const CollectionSaver = ({
-  noteId
+  noteId,
+  onToggle
 }: {
   noteId: string | number
+  onToggle?: () => void
 }) => {
   const { toast } = useToast();
   const [collections, setCollections] = useState<(Collection & { notes: OnlyIdNote[] | null })[] | null>(null);
@@ -85,11 +87,8 @@ export const CollectionSaver = ({
       await action.patch(`/api/notes/${noteId}/collection`, {
         // @ts-ignore
         collectionIds: [...selectedCollection]
-      }, {
-        success: {
-          title: "Added to collections"
-        }
       });
+      onToggle?.();
     }
     catch (err) {
       toast({

@@ -42,7 +42,10 @@ export const CollectionModal = ({
             Add to collection
           </DialogTitle>
         </DialogHeader>
-        <CollectionSaver noteId={noteId} />
+        <CollectionSaver
+          noteId={noteId}
+          onToggle={onToggle}
+        />
       </DialogContent>
     </Dialog>
   )

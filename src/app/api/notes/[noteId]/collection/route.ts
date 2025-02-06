@@ -35,7 +35,35 @@ export const PATCH = authMiddleware(
 
     const { collectionIds } = body as typeof schema._type;
 
-    const note = await prisma.note.update({
+    const foundedNotes = await prisma.collection.findMany({
+      where: {
+        id: { in: collectionIds }
+      }
+    });
+
+    if (foundedNotes.length !== collectionIds.length) {
+      if (!validate.success) {
+        return NextResponse.json({
+          message: "The given collection id was not found"
+        }, {
+          status: 400
+        })
+      }
+    }
+
+    // disconnect all
+    await prisma.note.update({
+      where: {
+        id: noteId,
+        userId: currentUser.id
+      },
+      data: {
+        collections: { set: [] }
+      }
+    });
+
+    // then connect it again lol
+    await prisma.note.update({
       where: {
         id: noteId,
         userId: currentUser.id
