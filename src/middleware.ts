@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const NOCACHE_PATHS = [
-  '/notes'
+  '/notes',
+  '/collections'
 ];
 
 class PathFinder {
@@ -32,6 +33,7 @@ export function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    '/notes'
+    '/notes',
+  '/collections'
   ],
 };

@@ -90,7 +90,7 @@ export const NoteForm = () => {
           name="categoryId"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Category</FormLabel>
+              <FormLabel>Category (Optional)</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>

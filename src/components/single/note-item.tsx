@@ -24,6 +24,8 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { getCategory } from "@/data/categories";
 import { useAction } from "@/hooks/use-action";
+import { useDisclosure } from "@/hooks/use-diclosure";
+import { CollectionModal } from "./modal/collection-modal";
 
 interface NoteItemProps {
   id: string | number;
@@ -45,6 +47,7 @@ const NoteItemMenu = ({
   const router = useRouter();
   const action = useAction();
   const { dispatch } = useAlert();
+  const collectionModal = useDisclosure();
 
   const onDelete = () => {
     dispatch({
@@ -59,7 +62,7 @@ const NoteItemMenu = ({
     });
   }
 
-  return (
+  return (<>
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant={"outline-2"} className='w-10 h-10'>
@@ -67,7 +70,7 @@ const NoteItemMenu = ({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent side="right" align="start">
-        <DropdownMenuItem className="pr-14">
+        <DropdownMenuItem>
           {isPublic ? <>
             <LockIcon />
             Unpublish
@@ -80,7 +83,7 @@ const NoteItemMenu = ({
           <DownloadIcon />
           Export
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem  className="pr-5" onClick={collectionModal.onOpen}>
           <SquareLibraryIcon />
           Add to Collection
         </DropdownMenuItem>
@@ -93,7 +96,12 @@ const NoteItemMenu = ({
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+    <CollectionModal
+      noteId={id}
+      isOpen={collectionModal.isOpen}
+      onToggle={collectionModal.onToggle}
+    />
+    </>)
 }
 
 export const NoteItem: React.FC<NoteItemProps> = ({

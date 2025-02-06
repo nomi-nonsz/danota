@@ -26,3 +26,24 @@ export function generateShorterContent(html: string, maxChar: number = 150, maxL
 
   return document.getElementsByTagName('body')[0].innerHTML;
 }
+
+export function generateNoteOrder (sort?: string, order?: string) {
+  let trueSort = 'updatedAt';
+  let trueOrder = 'desc';
+
+  if (!sort || !order) return { [trueSort]: trueOrder }
+
+  switch (sort) {
+    case 'title': trueSort = 'title'; break;
+    case 'date': trueSort = 'updatedAt'; break;
+    default: trueSort = 'updatedAt';
+  }
+
+  trueOrder = order;
+
+  if (!["desc", "order"].includes(order)) {
+    trueOrder = 'desc';
+  }
+
+  return { [trueSort]: trueOrder }
+}
