@@ -1,8 +1,7 @@
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
-import { Suspense } from 'react'
 
-import { NotesBar } from "@/components/single/notes-bar"
+import { CollectionBar } from '@/components/single/collection-bar'
 import { ProfileBar } from "@/components/ui/profile-bar"
 import { WorkContainer } from "@/components/ui/work-container"
 import { CollectionItem } from '@/components/single/collection-item'
@@ -36,9 +35,14 @@ export default async function CollectionsPage () {
         <header className="sm:my-16 my-8 text-center">
           <h1 className={`sm:text-4xl text-2xl font-bold ${poppins.className}`}>Collections</h1>
         </header>
-        <AddCollectionButton />
+        <div className="sm:block hidden">
+        <CollectionBar />
+        </div>
       </WorkContainer>
       <div className="flex-grow sm:overflow-y-scroll p-4">
+        <div className="sticky top-0 py-3 bg-background-2 sm:hidden block">
+          <CollectionBar />
+        </div>
         <WorkContainer className="flex flex-col sm:gap-4 gap-2">
           {collections.map((collection) => (
             <CollectionItem
