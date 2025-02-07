@@ -5,7 +5,6 @@ import { CollectionBar } from '@/components/single/collection-bar'
 import { ProfileBar } from "@/components/ui/profile-bar"
 import { WorkContainer } from "@/components/ui/work-container"
 import { CollectionItem } from '@/components/single/collection-item'
-import { AddCollectionButton } from '@/components/single/buttons/add-collection-button'
 
 import prisma from '@/lib/prisma'
 import { poppins } from "@/lib/fonts"

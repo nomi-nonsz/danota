@@ -20,12 +20,15 @@ import {
   DropdownMenuItem,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
+
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { getCategory } from "@/data/categories";
+
 import { useAction } from "@/hooks/use-action";
 import { useDisclosure } from "@/hooks/use-diclosure";
 import { CollectionModal } from "./modal/collection-modal";
+import { useCollectionGlobalCRUD } from "@/hooks/use-collection";
 
 interface NoteItemProps {
   id: string | number;
@@ -36,18 +39,21 @@ interface NoteItemProps {
   commentCount: number;
   date: Date;
   icon: string;
+  isOnCollection?: boolean;
 }
 
 const NoteItemMenu = ({
-  id, isPublic
+  id, isPublic, isOnCollection
 }: {
   id: string | number,
-  isPublic: boolean
+  isPublic: boolean,
+  isOnCollection?: boolean
 }) => {
   const router = useRouter();
   const action = useAction();
   const { dispatch } = useAlert();
   const collectionModal = useDisclosure();
+  const collectionState = useCollectionGlobalCRUD();
 
   const onDelete = () => {
     dispatch({
@@ -70,30 +76,42 @@ const NoteItemMenu = ({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent side="right" align="start">
-        <DropdownMenuItem>
-          {isPublic ? <>
-            <LockIcon />
-            Unpublish
-          </> : <>
-            <GlobeIcon />
-            Publish
-          </>}
-        </DropdownMenuItem>
+        {!isOnCollection && (
+          <DropdownMenuItem>
+            {isPublic ? <>
+              <LockIcon />
+              Unpublish
+            </> : <>
+              <GlobeIcon />
+              Publish
+            </>}
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem>
           <DownloadIcon />
           Export
         </DropdownMenuItem>
-        <DropdownMenuItem  className="pr-5" onClick={collectionModal.onOpen}>
-          <SquareLibraryIcon />
-          Add to Collection
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          className='text-destructive focus:text-background dark:focus:text-foreground focus:bg-destructive'
-          onClick={onDelete}
-        >
-          <TrashIcon />
-          Delete
-        </DropdownMenuItem>
+        {!isOnCollection ? (<>
+          <DropdownMenuItem  className="pr-5" onClick={collectionModal.onOpen}>
+            <SquareLibraryIcon />
+            Add to Collection
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className='text-destructive focus:text-background dark:focus:text-foreground focus:bg-destructive'
+            onClick={onDelete}
+          >
+            <TrashIcon />
+            Delete
+          </DropdownMenuItem>
+        </>) : (
+          <DropdownMenuItem
+            className='text-destructive focus:text-background dark:focus:text-foreground focus:bg-destructive'
+            onClick={() => collectionState.removeNote(id)}
+          >
+            <TrashIcon />
+            Remove from collection
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
     <CollectionModal
@@ -112,7 +130,8 @@ export const NoteItem: React.FC<NoteItemProps> = ({
   starCount,
   commentCount,
   date,
-  icon
+  icon,
+  isOnCollection
 }) => {
   const category = getCategory(icon);
   const Icon = icons[category?.icon ?? 'NotebookPen'];
@@ -165,6 +184,7 @@ export const NoteItem: React.FC<NoteItemProps> = ({
         <NoteItemMenu
           id={id}
           isPublic={isPublic}
+          isOnCollection={isOnCollection}
         />
       </section>
     </div>

@@ -5,7 +5,6 @@ import { PlusIcon } from "lucide-react"
 import { useDebouncedCallback } from "use-debounce"
 
 import { Button } from "../ui/button"
-import { NotesFilter } from "./notes-filter"
 
 import { SearchInput } from "@/components/ui/search-input"
 import { useCollectionModal } from "@/hooks/disclosures/use-collection-modal"
