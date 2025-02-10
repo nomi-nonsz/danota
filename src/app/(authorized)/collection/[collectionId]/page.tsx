@@ -85,7 +85,7 @@ export default async function CollectionPage ({
                 date={note.updatedAt}
                 isOnCollection
               />) : (
-                <NotesClientEmptyLabel />
+                <div className="text-center my-16">You haven't add notes to this collection yet</div>
               )
           }
         </WorkContainer>

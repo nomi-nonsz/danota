@@ -15,13 +15,24 @@ export const metadata: Metadata = {
   description: 'This is where your collections',
 }
 
-export default async function CollectionsPage () {
+export default async function CollectionsPage (
+  { searchParams } : {
+    searchParams?: {
+      q?: string
+    }
+  }
+) {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) redirect('/');
 
   const collections = await prisma.collection.findMany({
-    where: { userId: currentUser.id },
+    where: {
+      userId: currentUser.id,
+      name: {
+        contains: searchParams?.q
+      }
+    },
     take: 10
   });
 
