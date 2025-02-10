@@ -67,6 +67,7 @@ export default async function CollectionPage ({
         </div>
         <header className="my-8 mt-16">
           <h2 className={`sm:text-2xl text-xl font-bold ${poppins.className}`}>{collection.name}</h2>
+          {collection.description && <p className='mt-3 opacity-70'>{collection.description}</p>}
         </header>
       </WorkContainer>
       <div className="flex-grow sm:overflow-y-scroll p-4">

@@ -2,6 +2,10 @@
 
 import { useRouter, useSearchParams, type ReadonlyURLSearchParams } from "next/navigation";
 
+interface FilterConfig {
+  dontReplaceUrl?: boolean;
+}
+
 export const useFilterByParam = (queryName: string) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -27,7 +31,7 @@ export const useFilterByParam = (queryName: string) => {
   return { onChange };
 }
 
-export const useFilterByParams = () => {
+export const useFilterByParams = (config?: FilterConfig) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -46,7 +50,8 @@ export const useFilterByParams = () => {
       }
     })
 
-    router.replace(`?${params.toString()}`);
+    if (config?.dontReplaceUrl) router.push(`?${params.toString()}`);
+    else router.replace(`?${params.toString()}`);
   }
 
   return { set };
