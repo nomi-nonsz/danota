@@ -36,7 +36,7 @@ export default async function NotePage ({
 }) {
   const currentUser = await getCurrentUser();
 
-  const note = await prisma.note.findFirst({
+  const note = await prisma.note.findUnique({
     select: {
       id: true,
       title: true,

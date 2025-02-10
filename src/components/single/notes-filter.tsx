@@ -18,9 +18,9 @@ import { useEffect, useState } from "react"
 import { useFilterByParams } from "@/hooks/use-filter-byparam"
 
 export const NotesFilter = () => {
-  const params = useFilterByParams()
+  const params = useFilterByParams({ dontReplaceUrl: true });
   const [form, setForm] = useState({
-    sort: 'date',
+    sort: 'updatedAt',
     order: 'desc',
   });
   const [isInitialized, setInitialized] = useState(false);
