@@ -4,9 +4,15 @@ import { JSDOM } from 'jsdom';
 export function generateShorterContent(html: string, maxChar: number = 150, maxLine: number = 3): string {
   const { document } = new JSDOM(html).window;
   const contents = document.getElementsByTagName('body')[0].children;
+  const initialContentsLength = contents.length;
   let totalText = '';
 
   for (let index = 0; index < contents.length; index++) {
+    // remove inline formatting lol
+    contents[index].querySelectorAll('a,strong,em,i,a,b').forEach(el => {
+      el.outerHTML = el.textContent ?? '';
+    })
+
     const contentText = contents[index].textContent;
 
     if (!contentText) continue;
@@ -18,7 +24,7 @@ export function generateShorterContent(html: string, maxChar: number = 150, maxL
     const remainingChars = maxChar - totalText.length;
     contents[index].textContent = remainingChars > 0 ? contentText.substring(0, remainingChars) + '...' : '';
 
-    for (let i = index + 1; i < contents.length * 2; i++) {
+    for (let i = index + 1; i < initialContentsLength; i++) {
       contents[index + 1].remove();
     }
     break;

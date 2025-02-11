@@ -34,7 +34,7 @@ export const CanvasEditorProvider = ({
 
   const onSave = useDebouncedCallback(() => {
     noteStore.save();
-  }, 1000);
+  }, 1600);
 
   const onUpdate = (editor: Editor) => {
     noteStore.set('content', editor.getHTML());
