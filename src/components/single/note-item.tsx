@@ -29,6 +29,7 @@ import { useAction } from "@/hooks/use-action";
 import { useDisclosure } from "@/hooks/use-diclosure";
 import { CollectionModal } from "./modal/collection-modal";
 import { useCollectionGlobalCRUD } from "@/hooks/use-collection";
+import { ExporterModal } from "./modal/exporter-modal";
 
 interface NoteItemProps {
   id: string | number;
@@ -52,6 +53,8 @@ const NoteItemMenu = ({
   const router = useRouter();
   const action = useAction();
   const { dispatch } = useAlert();
+
+  const exporterModal = useDisclosure();
   const collectionModal = useDisclosure();
   const collectionState = useCollectionGlobalCRUD();
 
@@ -87,7 +90,7 @@ const NoteItemMenu = ({
             </>}
           </DropdownMenuItem>
         )}
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={exporterModal.onOpen}>
           <DownloadIcon />
           Export
         </DropdownMenuItem>
@@ -114,6 +117,11 @@ const NoteItemMenu = ({
         )}
       </DropdownMenuContent>
     </DropdownMenu>
+    <ExporterModal
+      noteId={id}
+      isOpen={exporterModal.isOpen}
+      onToggle={exporterModal.onToggle}
+    />
     <CollectionModal
       noteId={id}
       isOpen={collectionModal.isOpen}
