@@ -1,11 +1,19 @@
 'use client'
 
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
+import { ExportType, getExportTypeValue } from "@/types/enums";
+import type { NoteClient } from "@/types/prisma";
+import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
 
 import {
   Form,
@@ -15,13 +23,12 @@ import {
   FormMessage,
   FormLabel,
 } from "@/components/ui/form";
-import { useEffect, useState } from "react";
-import { ExportType, getExportTypeValue } from "@/types/enums";
-import { cn } from "@/lib/utils";
-import type { NoteClient } from "@/types/prisma";
-import axios from "axios";
-import { DownloadIcon, FileTextIcon, LoaderCircleIcon } from "lucide-react";
-import { DocumentPreview } from "@/components/ui/document-preview";
+import {
+  DownloadIcon,
+  FileTextIcon,
+  LoaderCircleIcon
+} from "lucide-react";
+// import { DocumentPreview } from "@/components/ui/document-preview";
 
 const exporterSchema = z.object({
   name: z.string(),
@@ -47,11 +54,15 @@ const ExporterInput = ({
 }
 
 export const Exporter = ({
-  noteId
+  noteId, onModalClose
 }: {
-  noteId: string | number
+  noteId: string | number,
+  onModalClose?: () => void,
 }) => {
+  const { toast } = useToast();
   const [note, setNote] = useState<NoteClient | null>(null);
+
+  const [exportPending, setExportPending] = useState<boolean>(false);
   
   const form = useForm<z.infer<typeof exporterSchema>>({
     resolver: zodResolver(exporterSchema),
@@ -61,7 +72,35 @@ export const Exporter = ({
   })
  
   async function onSubmit(values: z.infer<typeof exporterSchema>) {
-    
+    try {
+      setExportPending(true);
+      const res = await axios.get(`/api/notes/${noteId}/export`, {
+        params: {
+          filename: values.name,
+          type: values.exportType
+        },
+        responseType: 'blob'
+      });
+
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `${values.name}.${values.exportType}`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    }
+    catch (err) {
+      toast({
+        title: 'Error',
+        description: 'Failed to export the file, please try again later',
+        variant: 'destructive'
+      });
+    }
+    finally {
+      setExportPending(false);
+    }
   }
 
   const onExportClick = (type: ExportType) => {
@@ -69,10 +108,20 @@ export const Exporter = ({
   }
 
   const fetchNote = async () => {
-    const res = await axios.get<{ data: NoteClient | null }>(`/api/notes/${noteId}`);
-    const { data } = res.data;
-    setNote(data);
-    form.setValue('name', data?.title ?? form.getValues('name'));
+    try {
+      const res = await axios.get<{ data: NoteClient | null }>(`/api/notes/${noteId}`);
+      const { data } = res.data;
+      setNote(data);
+      form.setValue('name', data?.title ?? form.getValues('name'));
+    }
+    catch (err) {
+      onModalClose?.();
+      toast({
+        title: 'Error',
+        description: 'Failed to get the note data, try again later',
+        variant: 'destructive'
+      });
+    }
   }
 
   useEffect(() => {
@@ -133,6 +182,7 @@ export const Exporter = ({
         <Button
           className="w-full text-base font-bold py-4 h-fit"
           type="submit"
+          isLoading={exportPending}
         >
           <DownloadIcon />
           Download

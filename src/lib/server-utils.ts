@@ -1,4 +1,6 @@
 import { JSDOM } from 'jsdom';
+import puppeteer from "puppeteer-core";
+import chromium from "@sparticuz/chromium-min";
 
 // used for backend
 export function generateShorterContent(html: string, maxChar: number = 150, maxLine: number = 3): string {
@@ -52,4 +54,16 @@ export function generateNoteOrder (sort?: string, order?: string) {
   }
 
   return { [trueSort]: trueOrder }
+}
+
+export async function getMiniBrowser() {
+  return puppeteer.launch({
+    args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath(
+      `https://github.com/Sparticuz/chromium/releases/download/v129.0.0/chromium-v129.0.0-pack.tar`
+    ),
+    // @ts-ignore
+    headless: chromium.headless,
+  });
 }

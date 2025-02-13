@@ -2,6 +2,7 @@
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Exporter } from "../forms/exporter"
+import { useCallback } from "react"
 
 export const ExporterModal = ({
   isOpen, onToggle, noteId
@@ -10,6 +11,10 @@ export const ExporterModal = ({
   isOpen: boolean,
   onToggle: () => void,
 }) => {
+  const onClose = useCallback(() => {
+    if (isOpen) onToggle();
+  }, [onToggle])
+
   return (
     <Dialog open={isOpen} onOpenChange={onToggle} modal>
       <DialogContent
@@ -20,7 +25,10 @@ export const ExporterModal = ({
             Export note
           </DialogTitle>
         </DialogHeader>
-        <Exporter noteId={noteId} />
+        <Exporter
+          noteId={noteId}
+          onModalClose={onClose}
+        />
       </DialogContent>
     </Dialog>
   )
