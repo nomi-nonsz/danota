@@ -50,6 +50,11 @@ export const GET = authMiddleware(
         doc = await formatter.docx();
         mimeType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
         break;
+      case ExportType.HTML:
+        // start DOCX format
+        doc = await formatter.docx();
+        mimeType = "text/html; charset=utf-8";
+        break;
       default:
         return NextResponse.json({ message: `Invalid ${formatType} format` }, { status: 400 })
     }

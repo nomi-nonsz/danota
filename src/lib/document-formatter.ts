@@ -2,18 +2,6 @@ import { JSDOM } from 'jsdom';
 import { getMiniBrowser } from './server-utils';
 import htmlToDocx from 'html-to-docx';
 
-import path from 'path';
-import fs from 'fs';
-
-const fonts = {
-  Inter: {
-    normal: fs.readFileSync(path.join(process.cwd(), "public/fonts/static/Inter_18pt-Regular.ttf")),
-    bold: fs.readFileSync(path.join(process.cwd(), "public/fonts/static/Inter_18pt-Bold.ttf")),
-    italics: fs.readFileSync(path.join(process.cwd(), "public/fonts/static/Inter_18pt-Italic.ttf")),
-    bolditalics: fs.readFileSync(path.join(process.cwd(), "public/fonts/static/Inter_18pt-BoldItalic.ttf")),
-  },
-};
-
 export class DocumentFormatter {
   public filename: string;
   public content: string;
@@ -55,14 +43,18 @@ export class DocumentFormatter {
     }
   }
 
-  public async docx (): Promise<Buffer | ArrayBuffer | Blob> {
+  public async docx (): Promise<Buffer> {
     const html = await this.generateHTML();
     const options: htmlToDocx.DocumentOptions = {
       margins: { top: 720 * 1.8, right: 720 * 1.8, bottom: 720 * 1.8, left: 720 * 1.8 },
       font: 'Inter',
+      pageSize: {
+        width: 11906,
+        height: 16838
+      },
       fontSize: 22
     };
 
-    return await htmlToDocx(html, null, options);
+    return Buffer.from(await htmlToDocx(html, null, options) as ArrayBuffer);
   }
 }

@@ -32,22 +32,24 @@ import {
 
 const exporterSchema = z.object({
   name: z.string(),
-  exportType: z.enum(['pdf', 'docx'])
+  exportType: z.enum(['pdf', 'docx', 'html'])
 })
 
-// neeed to refactor
 const ExporterInput = ({
-  name, selected, onClick
+  name, value, field
 }: {
   name: string,
-  selected?: boolean
-  onClick?: () => any
+  value: ExportType,
+  field: {
+    value: typeof exporterSchema._type.exportType,
+    onChange: (type: typeof exporterSchema._type.exportType) => void
+  }
 }) => {
   return <Button
     type="button"
     variant={"outline-2"}
-    className={cn('px-8', selected && 'bg-foreground text-background hover:bg-foreground/40')}
-    onClick={onClick}
+    className={cn('px-8', field.value === value && 'bg-foreground text-background hover:bg-foreground/40')}
+    onClick={() => field.onChange(value)}
   >
     {name}
   </Button>
@@ -161,13 +163,14 @@ export const Exporter = ({
         <FormField
           control={form.control}
           name="exportType"
-          render={() => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel>Format</FormLabel>
               <FormControl>
                 <div className="flex gap-2">
-                  <ExporterInput name="PDF" onClick={() => onExportClick(ExportType.PDF)} selected={form.getValues('exportType') === ExportType.PDF} />
-                  <ExporterInput name="DOCX" onClick={() => onExportClick(ExportType.DOCX)} selected={form.getValues('exportType') === ExportType.DOCX} />
+                  <ExporterInput name="PDF" value={ExportType.PDF} field={field}/>
+                  <ExporterInput name="DOCX" value={ExportType.DOCX} field={field} />
+                  <ExporterInput name="HTML" value={ExportType.HTML} field={field} />
                 </div>
               </FormControl>
             </FormItem>
