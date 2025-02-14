@@ -57,4 +57,16 @@ export class DocumentFormatter {
 
     return Buffer.from(await htmlToDocx(html, null, options) as ArrayBuffer);
   }
+
+  public async html (): Promise<Buffer> {
+    const html = await this.generateHTML();
+    const dom = new JSDOM(html);
+    const { document } = dom.window;
+
+    document.querySelector('body')?.setAttribute('style', 'padding: 2.54cm');
+
+    const finalHtml = document.querySelector('html')!.outerHTML;
+
+    return Buffer.from(finalHtml, 'utf-8');
+  }
 }

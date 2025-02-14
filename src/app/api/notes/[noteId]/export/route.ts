@@ -52,7 +52,7 @@ export const GET = authMiddleware(
         break;
       case ExportType.HTML:
         // start DOCX format
-        doc = await formatter.docx();
+        doc = await formatter.html();
         mimeType = "text/html; charset=utf-8";
         break;
       default:
