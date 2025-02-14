@@ -32,7 +32,7 @@ import {
 
 const exporterSchema = z.object({
   name: z.string(),
-  exportType: z.enum(['pdf', 'docx', 'html'])
+  exportType: z.enum(['pdf', 'docx', 'html', 'md'])
 })
 
 const ExporterInput = ({
@@ -171,6 +171,7 @@ export const Exporter = ({
                   <ExporterInput name="PDF" value={ExportType.PDF} field={field}/>
                   <ExporterInput name="DOCX" value={ExportType.DOCX} field={field} />
                   <ExporterInput name="HTML" value={ExportType.HTML} field={field} />
+                  <ExporterInput name="Markdown" value={ExportType.MD} field={field} />
                 </div>
               </FormControl>
             </FormItem>

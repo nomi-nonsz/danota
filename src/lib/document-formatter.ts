@@ -1,6 +1,7 @@
 import { JSDOM } from 'jsdom';
 import { getMiniBrowser } from './server-utils';
 import htmlToDocx from 'html-to-docx';
+import TurndownService from 'turndown';
 
 export class DocumentFormatter {
   public filename: string;
@@ -64,9 +65,14 @@ export class DocumentFormatter {
     const { document } = dom.window;
 
     document.querySelector('body')?.setAttribute('style', 'padding: 2.54cm');
-
     const finalHtml = document.querySelector('html')!.outerHTML;
 
     return Buffer.from(finalHtml, 'utf-8');
+  }
+
+  public async md (): Promise<Buffer> {
+    const turndownService = new TurndownService();
+    const markdown = turndownService.turndown(this.content);
+    return Buffer.from(markdown, 'utf-8');
   }
 }

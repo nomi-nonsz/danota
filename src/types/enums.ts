@@ -1,7 +1,8 @@
 export enum ExportType {
   PDF = 'pdf',
   DOCX = 'docx',
-  HTML = 'html'
+  HTML = 'html',
+  MD = 'md'
 }
 
 export const getExportTypeValue = (value: ExportType) => {
