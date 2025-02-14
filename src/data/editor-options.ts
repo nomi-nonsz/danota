@@ -32,7 +32,8 @@ export const editorOptions = ({
       HTMLAttributes: {
         target: '_blank',
         class: "underline text-primary"
-      }
+      },
+      openOnClick: false
     })
   ],
   immediatelyRender: true,

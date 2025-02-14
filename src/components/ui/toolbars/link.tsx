@@ -2,7 +2,7 @@
 
 import type { Editor } from "@tiptap/react"
 import { ToolbarButton } from "../toolbar-button"
-import { Link2Icon } from "lucide-react"
+import { Link2Icon, Link2Off } from "lucide-react"
 import { LinkForm } from "@/components/single/forms/link-form"
 import { Popover } from "../popover"
 import { PopoverTrigger, PopoverContent } from "@radix-ui/react-popover";
@@ -20,11 +20,11 @@ export const LinkToolbar = ({
     editor.chain().focus().unsetLink().run();
   }
 
-  if (editor.isActive('underline')) {
+  if (editor.isActive('link')) {
     return (
       <ToolbarButton
-        icon={Link2Icon}
-        label="Insert link"
+        icon={Link2Off}
+        label="Remove link"
         name="link"
         onClick={down}
         isActive
