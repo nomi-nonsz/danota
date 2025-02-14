@@ -15,6 +15,34 @@ const schema = z.object({
   content: z.string()
 });
 
+export const GET = authMiddleware(
+  async (_, {
+    params: {
+      noteId
+    },
+    currentUser
+  }: {
+    params: {
+      noteId: string
+    },
+    currentUser: ClientUser
+  }) => {
+    const note = await prisma.note.findUnique({
+      where: {
+        id: noteId,
+        userId: currentUser.id
+      }
+    });
+
+    if (!note) return new NextResponse('Not found', { status: 404 });
+
+    return NextResponse.json({
+      data: note
+    }, {
+      status: 200
+    });
+})
+
 export const PATCH = authMiddleware(
   async (req, {
     params: {
