@@ -1,5 +1,6 @@
 import { JSDOM } from 'jsdom';
 import { getMiniBrowser } from './server-utils';
+import htmlToDocx from 'html-to-docx';
 
 import path from 'path';
 import fs from 'fs';
@@ -27,7 +28,7 @@ export class DocumentFormatter {
     const { document } = dom.window;
 
     const style = document.createElement('style');
-    style.innerHTML = `@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap'); body { font-family: 'Inter', serif; }`;
+    style.innerHTML = `@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap'); body { font-family: 'Inter', serif; font-size: 11pt; }`;
 
     document.querySelector('head')?.append(style);
 ``
@@ -45,7 +46,7 @@ export class DocumentFormatter {
       const pdfBuffer = await page.pdf({
         format: "A4",
         printBackground: true,
-        margin: { top: "1cm", right: "1cm", bottom: "1cm", left: "1cm" }
+        margin: { top: "2.1cm", right: "2.1cm", bottom: "2.1cm", left: "2.1cm" }
       });
       return Buffer.from(pdfBuffer);
     }
@@ -54,7 +55,14 @@ export class DocumentFormatter {
     }
   }
 
-  public async docx (): Promise<Buffer> {
-    
+  public async docx (): Promise<Buffer | ArrayBuffer | Blob> {
+    const html = await this.generateHTML();
+    const options: htmlToDocx.DocumentOptions = {
+      margins: { top: 720 * 1.8, right: 720 * 1.8, bottom: 720 * 1.8, left: 720 * 1.8 },
+      font: 'Inter',
+      fontSize: 22
+    };
+
+    return await htmlToDocx(html, null, options);
   }
 }
